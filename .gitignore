@@ -1,0 +1,31 @@
+# macOS
+.DS_Store
+
+# Local secrets
+.env.local
+
+# Xcode user and local state
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+
+# Build products
+build/
+DerivedData/
+
+# Swift Package Manager
+.swiftpm/
+.build/
+
+# Fastlane artifacts
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
+# Logs
+*.log
+
+# Editor metadata
+.vscode/
+.idea/
