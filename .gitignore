@@ -29,3 +29,5 @@ fastlane/test_output/
 # Editor metadata
 .vscode/
 .idea/
+
+LOCAL_PUSH_WORKFLOW.md
