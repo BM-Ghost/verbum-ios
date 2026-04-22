@@ -1,0 +1,82 @@
+name: "Security Scan"
+
+on:
+  schedule:
+    - cron: "0 3 * * 1"
+  push:
+    branches: [main, uat]
+  workflow_dispatch:
+
+concurrency:
+  group: "security-scan-${{ github.ref }}"
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+jobs:
+  codeql:
+    name: "CodeQL - SAST (Swift)"
+    runs-on: macos-15
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: swift
+          queries: security-extended, security-and-quality
+
+      - name: Build for CodeQL Analysis
+        run: |
+          xcodebuild \
+            -project Verbum.xcodeproj \
+            -scheme Verbum \
+            -configuration Debug \
+            -destination 'platform=iOS Simulator,OS=latest,name=iPhone 15' \
+            -derivedDataPath build \
+            clean build \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:swift"
+          upload: true
+
+  dependency-review:
+    name: "Dependency Review"
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+
+  secret-scan:
+    name: "Secret Leak Detection"
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: TruffleHog Scan
+        uses: trufflesecurity/trufflehog@v3.94.3
+        with:
+          path: ./
+          base: ${{ github.event.before || github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --only-verified
