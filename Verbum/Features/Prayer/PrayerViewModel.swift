@@ -8,11 +8,13 @@ final class PrayerViewModel: ObservableObject {
     private let repository: PrayerRepository
 
     init(repository: PrayerRepository? = nil) {
-        self.repository = repository ?? PrayerRepository()
-        loadPrayers()
+        self.repository = repository ?? PrayerRepository(modelContext: VerbumDatabase.modelContainer.mainContext)
+        Task { await loadPrayers() }
     }
 
-    func loadPrayers() {
+    func loadPrayers() async {
+        state = .loading
+        await repository.ensureSeeded()
         state = .success(repository.getPrayersByCategory())
     }
 

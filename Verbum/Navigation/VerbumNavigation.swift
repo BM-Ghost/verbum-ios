@@ -109,7 +109,7 @@ struct VerbumNavigation: View {
             // AI FAB
             Button { showAiChat = true } label: {
                 Image(systemName: "sparkles")
-                    .font(.system(size: 22))
+                    .font(VerbumTypography.headlineSmall)
                     .foregroundStyle(colors.onPrimary)
                     .frame(width: 56, height: 56)
                     .background(

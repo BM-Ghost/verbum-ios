@@ -9,10 +9,9 @@ struct MissalScreen: View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 2) {
                 Text("Today's Mass")
-                    .font(.title2)
-                    .fontWeight(.bold)
+                    .font(VerbumTypography.headlineSmall)
                 Text("Daily readings and liturgical texts")
-                    .font(.caption)
+                    .font(VerbumTypography.bodySmall)
                     .foregroundStyle(colors.onSurfaceVariant)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -31,11 +30,10 @@ struct MissalScreen: View {
                     HStack {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(season.displayName)
-                                .font(.caption)
-                                .fontWeight(.semibold)
+                                .font(VerbumTypography.labelLarge)
                                 .foregroundStyle(colors.primary)
                             Text("Liturgical Season")
-                                .font(.caption2)
+                                .font(VerbumTypography.labelSmall)
                                 .foregroundStyle(colors.onSurfaceVariant)
                         }
                         Spacer()
@@ -70,13 +68,12 @@ struct MissalScreen: View {
                     VStack(alignment: .leading, spacing: VerbumSpacing.lg) {
                         // Title
                         Text(readings.feastOrMemorial ?? "Daily Readings")
-                            .font(.system(.title3, design: .serif))
-                            .fontWeight(.semibold)
+                            .font(ScriptureTypography.bookTitle)
                             .foregroundStyle(colors.onSurface)
                             .padding(.horizontal, VerbumSpacing.screenPadding)
 
                         Text(readings.date)
-                            .font(.subheadline)
+                            .font(VerbumTypography.bodyMedium)
                             .foregroundStyle(colors.onSurfaceVariant)
                             .padding(.horizontal, VerbumSpacing.screenPadding)
 

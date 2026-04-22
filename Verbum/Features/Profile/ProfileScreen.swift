@@ -20,16 +20,15 @@ struct ProfileScreen: View {
                     HStack {
                         Button(action: onBack) {
                             Image(systemName: "chevron.left")
-                                .font(.headline)
+                                .font(VerbumTypography.titleMedium)
                         }
                         Spacer()
                         Text("Profile")
-                            .font(.headline)
-                            .fontWeight(.bold)
+                            .font(VerbumTypography.headlineSmall)
                         Spacer()
                         Button(action: onSettings) {
                             Image(systemName: "gearshape")
-                                .font(.headline)
+                                .font(VerbumTypography.titleMedium)
                         }
                     }
                     .padding(.horizontal, VerbumSpacing.screenPadding)
@@ -41,23 +40,21 @@ struct ProfileScreen: View {
                             .frame(width: 80, height: 80)
                             .overlay(
                                 Text(String(profile.displayName.prefix(1)).uppercased())
-                                    .font(.system(.title, design: .serif))
-                                    .fontWeight(.bold)
+                                    .font(ScriptureTypography.bookTitle)
                                     .foregroundStyle(colors.onPrimaryContainer)
                             )
 
                         Text(profile.displayName)
-                            .font(.title3)
-                            .fontWeight(.bold)
+                            .font(VerbumTypography.titleLarge)
                             .foregroundStyle(colors.onSurface)
 
                         Text(profile.bio)
-                            .font(.subheadline)
+                            .font(VerbumTypography.bodyMedium)
                             .foregroundStyle(colors.onSurfaceVariant)
 
                         if let parish = profile.parish {
                             Text(parish)
-                                .font(.caption)
+                                .font(VerbumTypography.labelMedium)
                                 .foregroundStyle(colors.primary)
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 4)
@@ -89,11 +86,10 @@ struct ProfileScreen: View {
                     if let favorite = profile.favoriteVerse {
                         VStack(alignment: .leading, spacing: VerbumSpacing.xs) {
                             Text("Favorite Verse")
-                                .font(.caption)
-                                .fontWeight(.semibold)
+                                .font(VerbumTypography.labelLarge)
                                 .foregroundStyle(colors.primary)
                             Text(favorite)
-                                .font(.system(.body, design: .serif))
+                                .font(ScriptureTypography.verseText)
                                 .italic()
                                 .foregroundStyle(colors.onSurface)
                         }
@@ -111,15 +107,14 @@ struct ProfileScreen: View {
                         Image(systemName: "calendar")
                             .foregroundStyle(colors.onSurfaceVariant)
                         Text("Joined \(Date(timeIntervalSince1970: TimeInterval(profile.joinedDate)).formatted(.dateTime.month(.wide).year()))")
-                            .font(.subheadline)
+                            .font(VerbumTypography.bodyMedium)
                             .foregroundStyle(colors.onSurfaceVariant)
                     }
 
                     // Sign out
                     Button(action: onSignOut) {
                         Text("Sign Out")
-                            .font(.body)
-                            .fontWeight(.medium)
+                            .font(VerbumTypography.bodyLarge)
                             .foregroundStyle(.red)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, VerbumSpacing.md)
@@ -138,11 +133,10 @@ struct ProfileScreen: View {
     private func statItem(value: String, label: String) -> some View {
         VStack(spacing: 4) {
             Text(value)
-                .font(.title3)
-                .fontWeight(.bold)
+                .font(VerbumTypography.titleMedium)
                 .foregroundStyle(colors.primary)
             Text(label)
-                .font(.caption2)
+                .font(VerbumTypography.labelSmall)
                 .foregroundStyle(colors.onSurfaceVariant)
         }
     }
@@ -153,11 +147,10 @@ struct ProfileScreen: View {
                 .foregroundStyle(colors.primary)
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .font(.caption)
+                    .font(VerbumTypography.bodySmall)
                     .foregroundStyle(colors.onSurfaceVariant)
                 Text(value)
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
+                    .font(VerbumTypography.bodyMedium)
                     .foregroundStyle(colors.onSurface)
             }
             Spacer()

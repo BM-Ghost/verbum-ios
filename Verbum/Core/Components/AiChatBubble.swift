@@ -14,7 +14,7 @@ struct AiChatBubbleView: View {
                         .fill(colors.primaryContainer)
                         .frame(width: 32, height: 32)
                     Image(systemName: "sparkles")
-                        .font(.system(size: 14))
+                        .font(VerbumTypography.labelLarge)
                         .foregroundColor(colors.onPrimaryContainer)
                 }
             }

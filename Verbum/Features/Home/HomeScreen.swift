@@ -22,10 +22,9 @@ struct HomeScreen: View {
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Verbum Dei")
-                            .font(.system(.title2, design: .serif))
-                            .fontWeight(.bold)
+                            .font(VerbumTypography.headlineSmall)
                         Text("The Word of God")
-                            .font(.caption)
+                            .font(VerbumTypography.bodySmall)
                             .foregroundStyle(colors.onSurfaceVariant)
                     }
                     Spacer()
@@ -89,14 +88,13 @@ struct HomeScreen: View {
     private var seasonHeroBanner: some View {
         VStack(spacing: VerbumSpacing.sm) {
             Text(viewModel.seasonEmoji(season))
-                .font(.system(size: 36))
+                .font(VerbumTypography.displaySmall)
             Text(season.displayName.uppercased())
-                .font(.caption)
-                .fontWeight(.bold)
+                .font(VerbumTypography.labelLarge)
                 .tracking(4)
                 .foregroundStyle(colors.onPrimaryContainer)
             Text(viewModel.seasonGreeting(season))
-                .font(.system(.body, design: .serif))
+                .font(ScriptureTypography.verseText)
                 .italic()
                 .foregroundStyle(colors.onPrimaryContainer.opacity(0.85))
                 .multilineTextAlignment(.center)
@@ -125,19 +123,17 @@ struct HomeScreen: View {
                     .fill(colors.primary)
                     .frame(width: 6, height: 6)
                 Text("VERSE OF THE DAY")
-                    .font(.caption)
-                    .fontWeight(.semibold)
+                    .font(VerbumTypography.labelLarge)
                     .tracking(2)
                     .foregroundStyle(colors.primary)
             }
             Text(viewModel.verseOfDay.text)
-                .font(.system(.body, design: .serif))
+                .font(ScriptureTypography.verseText)
                 .italic()
                 .lineSpacing(6)
                 .foregroundStyle(colors.onSurface)
             Text("— \(viewModel.verseOfDay.reference)")
-                .font(.caption2)
-                .fontWeight(.medium)
+                .font(VerbumTypography.labelMedium)
                 .foregroundStyle(colors.primary)
         }
         .padding(VerbumSpacing.lg)
@@ -168,11 +164,10 @@ struct HomeScreen: View {
         Button(action: action) {
             HStack(spacing: 8) {
                 Image(systemName: icon)
-                    .font(.system(size: 14))
+                    .font(VerbumTypography.labelLarge)
                     .foregroundStyle(colors.primary)
                 Text(label)
-                    .font(.subheadline)
-                    .fontWeight(.medium)
+                    .font(VerbumTypography.bodyMedium)
                     .foregroundStyle(colors.onSurface)
             }
             .padding(.horizontal, 16)
@@ -190,14 +185,13 @@ struct HomeScreen: View {
             HStack {
                 VStack(alignment: .leading, spacing: VerbumSpacing.xs) {
                     Text(viewModel.todaysMass.title)
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
+                        .font(VerbumTypography.titleSmall)
                         .foregroundStyle(colors.onPrimaryContainer)
                     Text(viewModel.todaysMass.firstReading)
-                        .font(.caption)
+                        .font(VerbumTypography.bodySmall)
                         .foregroundStyle(colors.onPrimaryContainer.opacity(0.7))
                     Text(viewModel.todaysMass.gospel)
-                        .font(.caption)
+                        .font(VerbumTypography.bodySmall)
                         .foregroundStyle(colors.onPrimaryContainer.opacity(0.7))
                 }
                 Spacer()
@@ -220,15 +214,14 @@ struct HomeScreen: View {
             VStack(alignment: .leading, spacing: VerbumSpacing.sm) {
                 HStack(spacing: VerbumSpacing.sm) {
                     Image(systemName: "hands.clap.fill")
-                        .font(.system(size: 14))
+                        .font(VerbumTypography.labelLarge)
                         .foregroundStyle(colors.primary)
                     Text("Suggested Prayer")
-                        .font(.caption)
-                        .fontWeight(.semibold)
+                        .font(VerbumTypography.labelLarge)
                         .foregroundStyle(colors.primary)
                 }
                 Text(viewModel.seasonPrayer(season))
-                    .font(.system(.body, design: .serif))
+                    .font(ScriptureTypography.verseText)
                     .lineSpacing(4)
                     .foregroundStyle(colors.onSurface)
                     .lineLimit(3)
@@ -250,15 +243,14 @@ struct HomeScreen: View {
         Button(action: onNavigateToBible) {
             HStack(spacing: VerbumSpacing.md) {
                 Image(systemName: "book.fill")
-                    .font(.system(size: 22))
+                    .font(VerbumTypography.titleLarge)
                     .foregroundStyle(colors.primary)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(viewModel.continueReading.book)
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
+                        .font(VerbumTypography.titleSmall)
                         .foregroundStyle(colors.onSurface)
                     Text(viewModel.continueReading.verse)
-                        .font(.caption)
+                        .font(VerbumTypography.bodySmall)
                         .foregroundStyle(colors.onSurfaceVariant)
                 }
                 Spacer()
@@ -278,8 +270,7 @@ struct HomeScreen: View {
     // MARK: - Section Header
     private func sectionHeader(_ title: String) -> some View {
         Text(title)
-            .font(.headline)
-            .fontWeight(.bold)
+            .font(VerbumTypography.headlineSmall)
             .foregroundStyle(colors.onSurface)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, VerbumSpacing.screenPadding)

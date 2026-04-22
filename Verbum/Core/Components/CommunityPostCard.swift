@@ -40,7 +40,7 @@ struct CommunityPostCardView: View {
                 }
                 Spacer()
                 Image(systemName: "ellipsis")
-                    .font(.system(size: 14))
+                    .font(VerbumTypography.labelLarge)
                     .foregroundColor(colors.onSurfaceVariant)
             }
 
@@ -77,7 +77,7 @@ struct CommunityPostCardView: View {
                 Button(action: onAmen) {
                     HStack(spacing: VerbumSpacing.xs) {
                         Image(systemName: "hands.clap.fill")
-                            .font(.system(size: 14))
+                            .font(VerbumTypography.labelLarge)
                         Text("\(amenCount) Amen")
                             .font(VerbumTypography.labelSmall)
                     }
@@ -86,7 +86,7 @@ struct CommunityPostCardView: View {
                 Button(action: onComment) {
                     HStack(spacing: VerbumSpacing.xs) {
                         Image(systemName: "bubble.left")
-                            .font(.system(size: 14))
+                            .font(VerbumTypography.labelLarge)
                         Text("\(commentCount)")
                             .font(VerbumTypography.labelSmall)
                     }

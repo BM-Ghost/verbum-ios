@@ -14,10 +14,9 @@ struct AiChatScreen: View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 2) {
                 Text("Verbum AI")
-                    .font(.title2)
-                    .fontWeight(.bold)
+                    .font(VerbumTypography.headlineSmall)
                 Text("Scripture and catechism guided reflections")
-                    .font(.caption)
+                    .font(VerbumTypography.bodySmall)
                     .foregroundStyle(colors.onSurfaceVariant)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -31,15 +30,14 @@ struct AiChatScreen: View {
                         Spacer().frame(height: VerbumSpacing.xxl)
 
                         Image(systemName: "sparkles")
-                            .font(.system(size: 48))
+                            .font(VerbumTypography.displaySmall)
                             .foregroundStyle(colors.primary)
 
                         Text("Verbum AI")
-                            .font(.system(.title2, design: .serif))
-                            .fontWeight(.bold)
+                            .font(VerbumTypography.headlineSmall)
 
                         Text("Your Catholic faith companion. Ask about Scripture, doctrine, prayer, and more.")
-                            .font(.subheadline)
+                            .font(VerbumTypography.bodyMedium)
                             .foregroundStyle(colors.onSurfaceVariant)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, VerbumSpacing.xl)
@@ -53,12 +51,11 @@ struct AiChatScreen: View {
                                 } label: {
                                     HStack(spacing: VerbumSpacing.xs) {
                                         Image(systemName: prompt.icon)
-                                            .font(.system(size: 12))
+                                            .font(VerbumTypography.labelMedium)
                                             .foregroundStyle(colors.primary)
                                         VStack(alignment: .leading, spacing: 1) {
                                             Text(prompt.title)
-                                                .font(.caption)
-                                                .fontWeight(.medium)
+                                                .font(VerbumTypography.labelMedium)
                                                 .foregroundStyle(colors.onSurface)
                                         }
                                         Spacer()
@@ -119,7 +116,7 @@ struct AiChatScreen: View {
 
                 Button(action: viewModel.sendMessage) {
                     Image(systemName: "arrow.up.circle.fill")
-                        .font(.system(size: 32))
+                        .font(VerbumTypography.headlineLarge)
                         .foregroundStyle(
                             viewModel.inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?
                                 colors.onSurfaceVariant.opacity(0.3) : colors.primary

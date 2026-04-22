@@ -10,7 +10,7 @@ struct LiturgicalSeasonBannerView: View {
         VStack(alignment: .leading, spacing: VerbumSpacing.xs) {
             HStack(spacing: VerbumSpacing.sm) {
                 Image(systemName: "calendar")
-                    .font(.system(size: 14))
+                    .font(VerbumTypography.labelLarge)
                     .foregroundColor(colors.onPrimaryContainer)
                 Text(dateLabel)
                     .font(VerbumTypography.labelMedium)

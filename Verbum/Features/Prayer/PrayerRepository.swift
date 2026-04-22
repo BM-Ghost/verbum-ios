@@ -1,9 +1,76 @@
 import Foundation
+import SwiftData
 
 @MainActor
 final class PrayerRepository: ObservableObject {
+
+    private let modelContext: ModelContext
+    private let seeder: PrayerAssetSeeder
+    private var prayerCache: [PrayerCategory: [Prayer]]? = nil
+
+    init(modelContext: ModelContext) {
+        self.modelContext = modelContext
+        self.seeder = PrayerAssetSeeder(modelContext: modelContext)
+    }
+
+    // MARK: - Seeding
+
+    func ensureSeeded() async {
+        await seeder.seed()
+        prayerCache = nil
+    }
+
+    // MARK: - Queries
+
     func getPrayersByCategory() -> [PrayerCategory: [Prayer]] {
-        [
+        if let cached = prayerCache { return cached }
+        let descriptor = FetchDescriptor<PrayerEntity>(
+            sortBy: [SortDescriptor(\.orderIndex)]
+        )
+        let entities = (try? modelContext.fetch(descriptor)) ?? []
+        if entities.isEmpty {
+            // Fallback to static seed while DB is populating
+            return Self.staticPrayers
+        }
+        var result: [PrayerCategory: [Prayer]] = [:]
+        for entity in entities {
+            let cat = PrayerCategory(rawValue: entity.category.capitalized)
+                ?? categoryFromSlug(entity.category)
+            var prayers = result[cat] ?? []
+            prayers.append(Prayer(id: entity.id, title: entity.title, category: cat,
+                                  text: entity.text, latinText: entity.latinText))
+            result[cat] = prayers
+        }
+        prayerCache = result
+        return result
+    }
+
+    func getPrayer(id: String) -> Prayer? {
+        let descriptor = FetchDescriptor<PrayerEntity>(
+            predicate: #Predicate { $0.id == id }
+        )
+        guard let entity = (try? modelContext.fetch(descriptor))?.first else {
+            return getPrayersByCategory().values.flatMap { $0 }.first(where: { $0.id == id })
+        }
+        let cat = categoryFromSlug(entity.category)
+        return Prayer(id: entity.id, title: entity.title, category: cat,
+                      text: entity.text, latinText: entity.latinText)
+    }
+
+    // MARK: - Helpers
+
+    private func categoryFromSlug(_ slug: String) -> PrayerCategory {
+        switch slug.lowercased() {
+        case "rosary":   return .rosary
+        case "morning":  return .morning
+        case "evening":  return .evening
+        case "saints":   return .saints
+        default:         return .devotion
+        }
+    }
+
+    // MARK: - Static fallback (mirrors prayers.json content)
+    static let staticPrayers: [PrayerCategory: [Prayer]] = [
             .rosary: [
                 Prayer(id: "rosary_1", title: "Holy Rosary", category: .rosary,
                        text: "In the name of the Father, and of the Son, and of the Holy Spirit. Amen.\n\nI believe in God, the Father almighty, Creator of heaven and earth, and in Jesus Christ, His only Son, our Lord, who was conceived by the Holy Spirit, born of the Virgin Mary, suffered under Pontius Pilate, was crucified, died and was buried…",
@@ -42,9 +109,4 @@ final class PrayerRepository: ObservableObject {
                        text: "St. Michael the Archangel, defend us in battle. Be our defense against the wickedness and snares of the Devil. May God rebuke him, we humbly pray, and do thou, O Prince of the heavenly hosts, by the power of God, thrust into hell Satan, and all the evil spirits, who prowl about the world seeking the ruin of souls. Amen."),
             ],
         ]
-    }
-
-    func getPrayer(id: String) -> Prayer? {
-        getPrayersByCategory().values.flatMap { $0 }.first(where: { $0.id == id })
-    }
 }

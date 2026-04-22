@@ -14,6 +14,21 @@
     <string>$(MARKETING_VERSION)</string>
     <key>CFBundleDisplayName</key>
     <string>Verbum</string>
+    <key>UIAppFonts</key>
+    <array>
+        <string>cormorant_garamond_bold.ttf</string>
+        <string>cormorant_garamond_medium.ttf</string>
+        <string>cormorant_garamond_regular.ttf</string>
+        <string>cormorant_garamond_semibold.ttf</string>
+        <string>eb_garamond_bold.ttf</string>
+        <string>eb_garamond_italic.ttf</string>
+        <string>eb_garamond_medium.ttf</string>
+        <string>eb_garamond_regular.ttf</string>
+        <string>eb_garamond_semibold.ttf</string>
+        <string>trajan_pro_bold.otf</string>
+        <string>trajan_pro_regular.ttf</string>
+        <string>unifrakturcook_bold.ttf</string>
+    </array>
     <key>UIApplicationSceneManifest</key>
     <dict>
         <key>UIApplicationSupportsMultipleScenes</key>
