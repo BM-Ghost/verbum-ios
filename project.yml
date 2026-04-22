@@ -22,3 +22,15 @@ targets:
       INFOPLIST_FILE: Verbum/Info.plist
       ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
       ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+
+  VerbumTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: VerbumTests
+        type: group
+    dependencies:
+      - target: Verbum
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.verbum.tests
+      GENERATE_INFOPLIST_FILE: YES

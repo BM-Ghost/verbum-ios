@@ -16,8 +16,7 @@ struct CreatePostScreen: View {
                 VStack(alignment: .leading, spacing: VerbumSpacing.lg) {
                     Group {
                         Text("Verse Reference")
-                            .font(.caption)
-                            .fontWeight(.semibold)
+                            .font(VerbumTypography.labelLarge)
                             .foregroundStyle(colors.primary)
                         TextField("e.g., John 3:16", text: $verseReference)
                             .textFieldStyle(.roundedBorder)
@@ -25,8 +24,7 @@ struct CreatePostScreen: View {
 
                     Group {
                         Text("Verse Text")
-                            .font(.caption)
-                            .fontWeight(.semibold)
+                            .font(VerbumTypography.labelLarge)
                             .foregroundStyle(colors.primary)
                         TextEditor(text: $verseText)
                             .frame(minHeight: 80)
@@ -38,8 +36,7 @@ struct CreatePostScreen: View {
 
                     Group {
                         Text("Your Reflection")
-                            .font(.caption)
-                            .fontWeight(.semibold)
+                            .font(VerbumTypography.labelLarge)
                             .foregroundStyle(colors.primary)
                         TextEditor(text: $reflection)
                             .frame(minHeight: 120)
@@ -51,8 +48,7 @@ struct CreatePostScreen: View {
 
                     Group {
                         Text("Tags (comma-separated)")
-                            .font(.caption)
-                            .fontWeight(.semibold)
+                            .font(VerbumTypography.labelLarge)
                             .foregroundStyle(colors.primary)
                         TextField("e.g., faith, hope, love", text: $tagsText)
                             .textFieldStyle(.roundedBorder)

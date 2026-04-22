@@ -11,10 +11,9 @@ struct CommunityFeedScreen: View {
             VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Community")
-                        .font(.title2)
-                        .fontWeight(.bold)
+                        .font(VerbumTypography.headlineSmall)
                     Text("Share reflections and encourage one another")
-                        .font(.caption)
+                        .font(VerbumTypography.bodySmall)
                         .foregroundStyle(colors.onSurfaceVariant)
                 }
                 .padding(.horizontal, VerbumSpacing.screenPadding)
@@ -51,7 +50,7 @@ struct CommunityFeedScreen: View {
 
             Button(action: onCreatePost) {
                 Image(systemName: "plus")
-                    .font(.system(size: 22, weight: .bold))
+                    .font(VerbumTypography.headlineSmall)
                     .foregroundStyle(colors.onPrimary)
                     .frame(width: 56, height: 56)
                     .background(Circle().fill(colors.primary))

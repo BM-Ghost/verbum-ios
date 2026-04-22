@@ -25,17 +25,17 @@ struct VerseCardView: View {
                 Spacer()
                 Button(action: onBookmark) {
                     Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-                        .font(.system(size: 16))
+                        .font(VerbumTypography.titleMedium)
                         .foregroundColor(isBookmarked ? colors.primary : colors.onSurfaceVariant)
                 }
                 Button(action: onShare) {
                     Image(systemName: "square.and.arrow.up")
-                        .font(.system(size: 16))
+                        .font(VerbumTypography.titleMedium)
                         .foregroundColor(colors.onSurfaceVariant)
                 }
                 Button(action: onAskAi) {
                     Image(systemName: "sparkles")
-                        .font(.system(size: 16))
+                        .font(VerbumTypography.titleMedium)
                         .foregroundColor(colors.primary)
                 }
             }

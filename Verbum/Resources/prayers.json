@@ -1,0 +1,437 @@
+{
+  "version": 2,
+  "prayers": [
+    {
+      "id": "sign_of_cross",
+      "title": "Sign of the Cross",
+      "category": "devotion",
+      "text": "In the name of the Father, and of the Son, and of the Holy Ghost. Amen.",
+      "latinText": "In nomine Patris, et Filii, et Spiritus Sancti. Amen.",
+      "seasonRecommendation": null,
+      "orderIndex": 1
+    },
+    {
+      "id": "our_father",
+      "title": "Our Father (Pater Noster)",
+      "category": "devotion",
+      "text": "Our Father, who art in heaven, hallowed be Thy name; Thy kingdom come; Thy will be done on earth as it is in heaven. Give us this day our daily bread; and forgive us our trespasses, as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil. Amen.",
+      "latinText": "Pater noster, qui es in caelis, sanctificetur nomen tuum. Adveniat regnum tuum. Fiat voluntas tua, sicut in caelo et in terra. Panem nostrum quotidianum da nobis hodie, et dimitte nobis debita nostra, sicut et nos dimittimus debitoribus nostris. Et ne nos inducas in tentationem, sed libera nos a malo. Amen.",
+      "seasonRecommendation": null,
+      "orderIndex": 2
+    },
+    {
+      "id": "hail_mary",
+      "title": "Hail Mary (Ave Maria)",
+      "category": "devotion",
+      "text": "Hail Mary, full of grace, the Lord is with thee. Blessed art thou amongst women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen.",
+      "latinText": "Ave Maria, gratia plena, Dominus tecum. Benedicta tu in mulieribus, et benedictus fructus ventris tui, Iesus. Sancta Maria, Mater Dei, ora pro nobis peccatoribus, nunc et in hora mortis nostrae. Amen.",
+      "seasonRecommendation": null,
+      "orderIndex": 3
+    },
+    {
+      "id": "glory_be",
+      "title": "Glory Be (Gloria Patri)",
+      "category": "devotion",
+      "text": "Glory be to the Father, and to the Son, and to the Holy Ghost. As it was in the beginning, is now, and ever shall be, world without end. Amen.",
+      "latinText": "Gloria Patri, et Filio, et Spiritui Sancto. Sicut erat in principio, et nunc, et semper, et in saecula saeculorum. Amen.",
+      "seasonRecommendation": null,
+      "orderIndex": 4
+    },
+    {
+      "id": "apostles_creed",
+      "title": "Apostles' Creed",
+      "category": "devotion",
+      "text": "I believe in God, the Father Almighty, Creator of heaven and earth; and in Jesus Christ, His only Son, our Lord; who was conceived by the Holy Ghost, born of the Virgin Mary, suffered under Pontius Pilate, was crucified, died, and was buried. He descended into hell; the third day He rose again from the dead; He ascended into heaven, and sitteth at the right hand of God, the Father Almighty; from thence He shall come to judge the living and the dead. I believe in the Holy Ghost, the holy Catholic Church, the communion of saints, the forgiveness of sins, the resurrection of the body, and life everlasting. Amen.",
+      "latinText": "Credo in Deum Patrem omnipotentem, Creatorem caeli et terrae. Et in Iesum Christum, Filium eius unicum, Dominum nostrum; qui conceptus est de Spiritu Sancto, natus ex Maria Virgine, passus sub Pontio Pilato, crucifixus, mortuus, et sepultus; descendit ad inferos; tertia die resurrexit a mortuis; ascendit ad caelos; sedet ad dexteram Dei Patris omnipotentis; inde venturus est iudicare vivos et mortuos. Credo in Spiritum Sanctum, sanctam Ecclesiam catholicam, sanctorum communionem, remissionem peccatorum, carnis resurrectionem, vitam aeternam. Amen.",
+      "seasonRecommendation": null,
+      "orderIndex": 5
+    },
+    {
+      "id": "nicene_creed",
+      "title": "Nicene Creed",
+      "category": "devotion",
+      "text": "I believe in one God, the Father almighty, maker of heaven and earth, of all things visible and invisible. I believe in one Lord Jesus Christ, the Only Begotten Son of God, born of the Father before all ages. God from God, Light from Light, true God from true God, begotten, not made, consubstantial with the Father; through him all things were made. For us men and for our salvation he came down from heaven, and by the Holy Ghost was incarnate of the Virgin Mary, and became man. For our sake he was crucified under Pontius Pilate, he suffered death and was buried, and rose again on the third day in accordance with the Scriptures. He ascended into heaven and is seated at the right hand of the Father. He will come again in glory to judge the living and the dead and his kingdom will have no end. I believe in the Holy Ghost, the Lord, the giver of life, who proceeds from the Father and the Son, who with the Father and the Son is adored and glorified, who has spoken through the prophets. I believe in one, holy, catholic and apostolic Church. I confess one Baptism for the forgiveness of sins and I look forward to the resurrection of the dead and the life of the world to come. Amen.",
+      "latinText": "Credo in unum Deum, Patrem omnipotentem, factorem caeli et terrae, visibilium omnium et invisibilium. Et in unum Dominum Iesum Christum, Filium Dei unigenitum, et ex Patre natum ante omnia saecula. Deum de Deo, lumen de lumine, Deum verum de Deo vero, genitum, non factum, consubstantialem Patri; per quem omnia facta sunt. Qui propter nos homines et propter nostram salutem descendit de caelis. Et incarnatus est de Spiritu Sancto ex Maria Virgine, et homo factus est. Crucifixus etiam pro nobis sub Pontio Pilato, passus et sepultus est, et resurrexit tertia die, secundum Scripturas, et ascendit in caelum, sedet ad dexteram Patris. Et iterum venturus est cum gloria, iudicare vivos et mortuos, cuius regni non erit finis. Et in Spiritum Sanctum, Dominum et vivificantem, qui ex Patre Filioque procedit. Qui cum Patre et Filio simul adoratur et conglorificatur, qui locutus est per prophetas. Et unam sanctam catholicam et apostolicam Ecclesiam. Confiteor unum baptisma in remissionem peccatorum. Et exspecto resurrectionem mortuorum, et vitam venturi saeculi. Amen.",
+      "seasonRecommendation": null,
+      "orderIndex": 6
+    },
+    {
+      "id": "act_of_contrition",
+      "title": "Act of Contrition",
+      "category": "devotion",
+      "text": "O my God, I am heartily sorry for having offended Thee, and I detest all my sins because I dread the loss of heaven and the pains of hell; but most of all because they offend Thee, my God, Who art all-good and deserving of all my love. I firmly resolve, with the help of Thy grace, to confess my sins, to do penance, and to amend my life. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 7
+    },
+    {
+      "id": "act_of_faith",
+      "title": "Act of Faith",
+      "category": "devotion",
+      "text": "O my God, I firmly believe that Thou art one God in three Divine Persons, Father, Son, and Holy Ghost; I believe that Thy Divine Son became man, and died for our sins, and that He will come to judge the living and the dead. I believe these and all the truths which the Holy Catholic Church teaches, because Thou hast revealed them, Who canst neither deceive nor be deceived. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 8
+    },
+    {
+      "id": "act_of_hope",
+      "title": "Act of Hope",
+      "category": "devotion",
+      "text": "O my God, relying on Thy almighty power and infinite mercy and promises, I hope to obtain pardon of my sins, the help of Thy grace, and life everlasting, through the merits of Jesus Christ, my Lord and Redeemer. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 9
+    },
+    {
+      "id": "act_of_charity",
+      "title": "Act of Charity",
+      "category": "devotion",
+      "text": "O my God, I love Thee above all things, with my whole heart and soul, because Thou art all-good and worthy of all love. I love my neighbor as myself for the love of Thee. I forgive all who have injured me and ask pardon of all whom I have injured. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 10
+    },
+    {
+      "id": "memorare",
+      "title": "Memorare",
+      "category": "devotion",
+      "text": "Remember, O most gracious Virgin Mary, that never was it known that anyone who fled to thy protection, implored thy help, or sought thy intercession was left unaided. Inspired by this confidence, I fly unto thee, O Virgin of virgins, my Mother. To thee do I come; before thee I stand, sinful and sorrowful. O Mother of the Word Incarnate, despise not my petitions, but in thy mercy hear and answer me. Amen.",
+      "latinText": "Memorare, O piissima Virgo Maria, non esse auditum a saeculo, quemquam ad tua currentem praesidia, tua implorantem auxilia, tua petentem suffragia, esse derelictum. Ego tali animatus confidentia, ad te, Virgo Virginum, Mater, curro; ad te venio; coram te gemens peccator assisto. Noli, Mater Verbi, verba mea despicere; sed audi propitia et exaudi. Amen.",
+      "seasonRecommendation": null,
+      "orderIndex": 11
+    },
+    {
+      "id": "anima_christi",
+      "title": "Anima Christi",
+      "category": "devotion",
+      "text": "Soul of Christ, sanctify me.\nBody of Christ, save me.\nBlood of Christ, inebriate me.\nWater from the side of Christ, wash me.\nPassion of Christ, strengthen me.\nO good Jesus, hear me.\nWithin Thy wounds hide me.\nSuffer me not to be separated from Thee.\nFrom the malignant enemy defend me.\nIn the hour of my death call me,\nAnd bid me come unto Thee,\nThat with Thy saints I may praise Thee\nFor ever and ever. Amen.",
+      "latinText": "Anima Christi, sanctifica me.\nCorpus Christi, salva me.\nSanguis Christi, inebria me.\nAqua lateris Christi, lava me.\nPassio Christi, conforta me.\nO bone Iesu, exaudi me.\nIntra tua vulnera absconde me.\nNe permittas me separari a te.\nAb hoste maligno defende me.\nIn hora mortis meae voca me.\nEt iube me venire ad te,\nUt cum Sanctis tuis laudem te\nIn saecula saeculorum. Amen.",
+      "seasonRecommendation": "LENT",
+      "orderIndex": 12
+    },
+    {
+      "id": "angelus",
+      "title": "Angelus",
+      "category": "devotion",
+      "text": "V. The Angel of the Lord declared unto Mary.\nR. And she conceived of the Holy Ghost.\nHail Mary…\n\nV. Behold the handmaid of the Lord.\nR. Be it done unto me according to thy word.\nHail Mary…\n\nV. And the Word was made flesh.\nR. And dwelt among us.\nHail Mary…\n\nV. Pray for us, O holy Mother of God.\nR. That we may be made worthy of the promises of Christ.\n\nLet us pray: Pour forth, we beseech Thee, O Lord, Thy grace into our hearts; that we, to whom the Incarnation of Christ Thy Son was made known by the message of an angel, may by His Passion and Cross be brought to the glory of His Resurrection, through the same Christ our Lord. Amen.",
+      "latinText": null,
+      "seasonRecommendation": "ADVENT",
+      "orderIndex": 13
+    },
+    {
+      "id": "regina_caeli",
+      "title": "Regina Caeli",
+      "category": "devotion",
+      "text": "Queen of Heaven, rejoice, alleluia!\nFor He whom thou didst merit to bear, alleluia,\nHath risen as He said, alleluia.\nPray for us to God, alleluia.\n\nV. Rejoice and be glad, O Virgin Mary, alleluia.\nR. For the Lord is truly risen, alleluia.\n\nLet us pray: O God, who by the Resurrection of Thy Son, our Lord Jesus Christ, hast vouchsafed to make glad the whole world, grant we beseech Thee, that through the intercession of the Virgin Mary, His Mother, we may attain the joys of eternal life, through the same Christ our Lord. Amen.",
+      "latinText": "Regina caeli, laetare, alleluia!\nQuia quem meruisti portare, alleluia,\nResurrexit, sicut dixit, alleluia.\nOra pro nobis Deum, alleluia.\n\nV. Gaude et laetare, Virgo Maria, alleluia.\nR. Quia surrexit Dominus vere, alleluia.",
+      "seasonRecommendation": "EASTER",
+      "orderIndex": 14
+    },
+    {
+      "id": "salve_regina",
+      "title": "Salve Regina (Hail Holy Queen)",
+      "category": "devotion",
+      "text": "Hail, holy Queen, Mother of Mercy! Our life, our sweetness, and our hope! To thee do we cry, poor banished children of Eve; to thee do we send up our sighs, mourning and weeping in this valley of tears. Turn, then, most gracious Advocate, thine eyes of mercy toward us; and after this our exile, show unto us the blessed fruit of thy womb, Jesus. O clement, O loving, O sweet Virgin Mary.\n\nV. Pray for us, O holy Mother of God.\nR. That we may be made worthy of the promises of Christ.",
+      "latinText": "Salve, Regina, Mater misericordiae; vita, dulcedo, et spes nostra, salve. Ad te clamamus exsules filii Hevae. Ad te suspiramus, gementes et flentes in hac lacrimarum valle. Eia ergo, advocata nostra, illos tuos misericordes oculos ad nos converte. Et Iesum, benedictum fructum ventris tui, nobis post hoc exsilium ostende. O clemens, O pia, O dulcis Virgo Maria.",
+      "seasonRecommendation": null,
+      "orderIndex": 15
+    },
+    {
+      "id": "te_deum",
+      "title": "Te Deum",
+      "category": "devotion",
+      "text": "O God, we praise Thee; we acknowledge Thee to be the Lord.\nEverlasting Father, all the earth doth worship Thee.\nTo Thee all the Angels, the Heavens and all the Powers,\nAll the Cherubim and Seraphim, unceasingly proclaim:\nHoly, Holy, Holy, Lord God of Hosts!\nHeaven and earth are full of the Majesty of Thy glory.\nThe glorious choir of the Apostles,\nThe wonderful company of Prophets,\nThe white-robed army of Martyrs, praise Thee.\nHoly Church throughout the world doth acknowledge Thee:\nThe Father of infinite Majesty;\nThine adorable, true and only Son;\nAnd the Holy Spirit, the Comforter.\nThou art the King of Glory, O Christ.\nThou art the everlasting Son of the Father.\nWhen Thou tookest upon Thyself the nature of man to deliver him, Thou didst not abhor the Virgin's womb.\nHaving overcome the sting of death, Thou hast opened to all believers the Kingdom of Heaven.\nThou sittest at the right hand of God, in the glory of the Father.\nWe believe that Thou shalt come to be our Judge.\nWe beseech Thee, therefore, to help Thy servants whom Thou hast redeemed with Thy Precious Blood. Amen.",
+      "latinText": "Te Deum laudamus: te Dominum confitemur. Te aeternum Patrem omnis terra veneratur. Tibi omnes Angeli, tibi Caeli et universae Potestates, tibi Cherubim et Seraphim incessabili voce proclamant: Sanctus, Sanctus, Sanctus, Dominus Deus Sabaoth. Pleni sunt caeli et terra maiestatis gloriae tuae. Te gloriosus Apostolorum chorus, te Prophetarum laudabilis numerus, te Martyrum candidatus laudat exercitus.",
+      "seasonRecommendation": "CHRISTMAS",
+      "orderIndex": 16
+    },
+    {
+      "id": "come_holy_spirit",
+      "title": "Come, Holy Spirit (Veni Sancte Spiritus)",
+      "category": "devotion",
+      "text": "Come, Holy Spirit, fill the hearts of Thy faithful, and enkindle in them the fire of Thy love.\n\nV. Send forth Thy Spirit and they shall be created.\nR. And Thou shalt renew the face of the earth.\n\nLet us pray: O God, Who didst instruct the hearts of the faithful by the light of the Holy Spirit, grant us by the same Holy Spirit to be truly wise, and ever to rejoice in His consolation. Through Christ our Lord. Amen.",
+      "latinText": "Veni, Sancte Spiritus, reple tuorum corda fidelium, et tui amoris in eis ignem accende.\n\nV. Emitte Spiritum tuum et creabuntur.\nR. Et renovabis faciem terrae.\n\nOremus: Deus, qui corda fidelium Sancti Spiritus illustratione docuisti, da nobis in eodem Spiritu recta sapere, et de eius semper consolatione gaudere. Per Christum Dominum nostrum. Amen.",
+      "seasonRecommendation": "PENTECOST",
+      "orderIndex": 17
+    },
+    {
+      "id": "magnificat",
+      "title": "Magnificat",
+      "category": "devotion",
+      "text": "My soul doth magnify the Lord:\nAnd my spirit hath rejoiced in God my Saviour.\nBecause He hath regarded the humility of His handmaid: for behold from henceforth all generations shall call me blessed.\nBecause He that is mighty hath done great things to me: and holy is His name.\nAnd His mercy is from generation unto generations, to them that fear Him.\nHe hath shewed might in His arm: He hath scattered the proud in the conceit of their heart.\nHe hath put down the mighty from their seat, and hath exalted the humble.\nHe hath filled the hungry with good things: and the rich He hath sent empty away.\nHe hath received Israel His servant, being mindful of His mercy.\nAs He spoke to our fathers: to Abraham and to his seed for ever.",
+      "latinText": "Magnificat anima mea Dominum, et exsultavit spiritus meus in Deo salvatore meo. Quia respexit humilitatem ancillae suae; ecce enim ex hoc beatam me dicent omnes generationes. Quia fecit mihi magna qui potens est, et sanctum nomen eius. Et misericordia eius a progenie in progenies timentibus eum. Fecit potentiam in brachio suo; dispersit superbos mente cordis sui. Deposuit potentes de sede et exaltavit humiles. Esurientes implevit bonis et divites dimisit inanes. Suscepit Israel puerum suum, recordatus misericordiae suae. Sicut locutus est ad patres nostros, Abraham et semini eius in saecula.",
+      "seasonRecommendation": "ADVENT",
+      "orderIndex": 18
+    },
+    {
+      "id": "benedictus",
+      "title": "Benedictus (Canticle of Zachary)",
+      "category": "devotion",
+      "text": "Blessed be the Lord God of Israel, because He hath visited and wrought the redemption of His people. And hath raised up a horn of salvation to us, in the house of David His servant. As He spoke by the mouth of His holy prophets, who are from the beginning: Salvation from our enemies and from the hand of all that hate us. To perform mercy to our fathers and to remember His holy testament, the oath which He swore to Abraham our father, that He would grant to us. That being delivered from the hand of our enemies, we may serve Him without fear, in holiness and justice before Him, all our days. And thou, child, shalt be called the Prophet of the Highest: for thou shalt go before the face of the Lord to prepare His ways. To give knowledge of salvation to His people, unto the remission of their sins: through the bowels of the mercy of our God, in which the Orient from on high hath visited us. To enlighten them that sit in darkness and in the shadow of death: to direct our feet into the way of peace. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 19
+    },
+    {
+      "id": "divine_mercy_chaplet",
+      "title": "Divine Mercy Chaplet",
+      "category": "devotion",
+      "text": "Begin with: Our Father, Hail Mary, and Apostles' Creed.\n\nOn the large beads, pray:\nEternal Father, I offer You the Body and Blood, Soul and Divinity of Your dearly beloved Son, Our Lord Jesus Christ, in atonement for our sins and those of the whole world.\n\nOn the small beads, pray:\nFor the sake of His sorrowful Passion, have mercy on us and on the whole world.\n\nAt the end, pray three times:\nHoly God, Holy Mighty One, Holy Immortal One, have mercy on us and on the whole world.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 20
+    },
+    {
+      "id": "holy_rosary_joyful",
+      "title": "Holy Rosary — Joyful Mysteries",
+      "category": "rosary",
+      "text": "The Joyful Mysteries (Mondays & Saturdays):\n\n1st Mystery — The Annunciation\n   The Angel Gabriel announces to Mary that she is to be the Mother of God.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.\n\n2nd Mystery — The Visitation\n   Mary visits her cousin Elizabeth, who bears John the Baptist.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.\n\n3rd Mystery — The Nativity\n   Jesus is born in a manger in Bethlehem.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.\n\n4th Mystery — The Presentation\n   Mary and Joseph present the Child Jesus in the Temple.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.\n\n5th Mystery — The Finding of Jesus in the Temple\n   The child Jesus is found in the Temple after three days.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.\n\nClosing: Hail Holy Queen (Salve Regina), then:\nO God, whose only-begotten Son, by His life, death, and resurrection, has purchased for us the rewards of eternal life; grant, we beseech Thee, that meditating upon these mysteries of the Most Holy Rosary of the Blessed Virgin Mary, we may imitate what they contain and obtain what they promise. Through the same Christ our Lord. Amen.",
+      "latinText": null,
+      "seasonRecommendation": "ADVENT",
+      "orderIndex": 30
+    },
+    {
+      "id": "holy_rosary_sorrowful",
+      "title": "Holy Rosary — Sorrowful Mysteries",
+      "category": "rosary",
+      "text": "The Sorrowful Mysteries (Tuesdays & Fridays):\n\n1st Mystery — The Agony in the Garden\n   Jesus prays in Gethsemane and sweats blood for our sins.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.\n\n2nd Mystery — The Scourging at the Pillar\n   Jesus is bound and scourged at the pillar.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.\n\n3rd Mystery — The Crowning with Thorns\n   Jesus is crowned with thorns and mocked as King.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.\n\n4th Mystery — The Carrying of the Cross\n   Jesus carries His Cross to Calvary.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.\n\n5th Mystery — The Crucifixion\n   Jesus is crucified and dies on the Cross for our sins.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.",
+      "latinText": null,
+      "seasonRecommendation": "LENT",
+      "orderIndex": 31
+    },
+    {
+      "id": "holy_rosary_glorious",
+      "title": "Holy Rosary — Glorious Mysteries",
+      "category": "rosary",
+      "text": "The Glorious Mysteries (Wednesdays & Sundays):\n\n1st Mystery — The Resurrection\n   Jesus rises gloriously from the dead on the third day.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.\n\n2nd Mystery — The Ascension\n   Jesus ascends into heaven forty days after the Resurrection.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.\n\n3rd Mystery — The Descent of the Holy Spirit\n   The Holy Spirit descends upon the Apostles at Pentecost.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.\n\n4th Mystery — The Assumption of Mary\n   Mary is assumed body and soul into heaven.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.\n\n5th Mystery — The Coronation of Mary\n   Mary is crowned Queen of Heaven and Earth.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.",
+      "latinText": null,
+      "seasonRecommendation": "EASTER",
+      "orderIndex": 32
+    },
+    {
+      "id": "holy_rosary_luminous",
+      "title": "Holy Rosary — Luminous Mysteries",
+      "category": "rosary",
+      "text": "The Luminous Mysteries (Thursdays):\n\n1st Mystery — The Baptism of Jesus in the Jordan\n   Jesus is baptised by John and the Father declares: 'This is My beloved Son.'\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.\n\n2nd Mystery — The Wedding at Cana\n   At Mary's intercession, Jesus performs His first miracle.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.\n\n3rd Mystery — The Proclamation of the Kingdom\n   Jesus proclaims the Kingdom and calls all to conversion.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.\n\n4th Mystery — The Transfiguration\n   Jesus is transfigured on Mount Tabor before Peter, James, and John.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.\n\n5th Mystery — The Institution of the Eucharist\n   Jesus institutes the Holy Eucharist at the Last Supper.\n   Our Father, 10 Hail Marys, Glory Be, O my Jesus.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 33
+    },
+    {
+      "id": "fatima_prayer",
+      "title": "Fatima Prayer (O My Jesus)",
+      "category": "rosary",
+      "text": "O my Jesus, forgive us our sins, save us from the fires of hell, lead all souls to heaven, especially those in most need of Thy mercy. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 34
+    },
+    {
+      "id": "morning_offering",
+      "title": "Morning Offering",
+      "category": "morning",
+      "text": "O Jesus, through the Immaculate Heart of Mary, I offer Thee my prayers, works, joys, and sufferings of this day for all the intentions of Thy Sacred Heart, in union with the Holy Sacrifice of the Mass throughout the world, in reparation for my sins, for the intentions of all my relatives and friends, and in particular for the intentions of the Holy Father. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 40
+    },
+    {
+      "id": "morning_prayer_lauds",
+      "title": "Morning Prayer (Lauds)",
+      "category": "morning",
+      "text": "Lord, open my lips, and my mouth shall proclaim Your praise.\n\nO God, come to my assistance.\nO Lord, make haste to help me.\nGlory be to the Father, and to the Son, and to the Holy Ghost. As it was in the beginning, is now, and ever shall be, world without end. Amen. Alleluia.\n\nThrough this holy morning, grant, O Lord, that we may keep ourselves without sin. Have mercy on us, O Lord, have mercy on us. Let Thy mercy be upon us, O Lord, as we have hoped in Thee. In Thee, O Lord, have I hoped; let me never be confounded.\n\nLet us pray: Lord God Almighty, who hast brought us to the beginning of this day, defend us in the same by Thy power; that we may not fall this day into any sin, but that all our words may so proceed, all our thoughts and actions may be so directed, as to be always just in Thy sight. Through our Lord Jesus Christ, Thy Son, Who liveth and reigneth with Thee in the unity of the Holy Ghost, God, world without end. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 41
+    },
+    {
+      "id": "guardian_angel_morning",
+      "title": "Prayer to the Guardian Angel",
+      "category": "morning",
+      "text": "Angel of God, my guardian dear, to whom God's love commits me here, ever this day be at my side, to light and guard, to rule and guide. Amen.",
+      "latinText": "Angele Dei, qui custos es mei, me tibi commissum pietate superna, illumina, custodi, rege et guberna. Amen.",
+      "seasonRecommendation": null,
+      "orderIndex": 42
+    },
+    {
+      "id": "morning_consecration",
+      "title": "Morning Consecration to the Sacred Heart",
+      "category": "morning",
+      "text": "O Sacred Heart of Jesus, I consecrate to Thee this day, all my thoughts, words and deeds. I beseech Thee that in all things I may act for Thine honour and glory and the salvation of souls. Keep me from all evil, and should I fall into sin, obtain for me the grace of true repentance. Guard me from all danger of body and soul. Help me to overcome all temptations. Direct all my actions to the greater glory of Thy Father, and grant me the grace of final perseverance. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 43
+    },
+    {
+      "id": "morning_psalm",
+      "title": "Psalm 63 — Morning Prayer of Longing",
+      "category": "morning",
+      "text": "O God, my God, to Thee do I watch at break of day. For Thee my soul hath thirsted; for Thee my flesh, O how many ways! In a desert land, and where there is no way, and no water; so in the sanctuary have I come before Thee, to see Thy power and Thy glory. For Thy mercy is better than lives: Thee my lips shall praise. Thus will I bless Thee all my life long: and in Thy name I will lift up my hands. Let my soul be filled as with marrow and fatness: and my mouth shall praise Thee with joyful lips. If I have remembered Thee upon my bed, I will meditate on Thee in the morning; because Thou hast been my helper. And I will rejoice under the covert of Thy wings: my soul hath stuck close to Thee: Thy right hand hath received me. (Psalm 62 in Douay-Rheims numbering)",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 44
+    },
+    {
+      "id": "act_of_contrition_evening",
+      "title": "Act of Contrition (Evening)",
+      "category": "evening",
+      "text": "O my God, I am heartily sorry for having offended Thee, and I detest all my sins because I dread the loss of heaven and the pains of hell; but most of all because they offend Thee, my God, Who art all-good and deserving of all my love. I firmly resolve, with the help of Thy grace, to confess my sins, to do penance, and to amend my life. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 50
+    },
+    {
+      "id": "magnificat_evening",
+      "title": "Evening Magnificat",
+      "category": "evening",
+      "text": "My soul doth magnify the Lord, and my spirit hath rejoiced in God my Saviour. Because He hath regarded the humility of His handmaid: for behold from henceforth all generations shall call me blessed. Because He that is mighty hath done great things to me; and holy is His name. And His mercy is from generation unto generations, to them that fear Him. He hath shewed might in His arm: He hath scattered the proud in the conceit of their heart. He hath put down the mighty from their seat, and hath exalted the humble. He hath filled the hungry with good things; and the rich He hath sent empty away. He hath received Israel His servant, being mindful of His mercy. As He spoke to our fathers: to Abraham and to his seed for ever. Amen.",
+      "latinText": "Magnificat anima mea Dominum, et exsultavit spiritus meus in Deo salvatore meo. Quia respexit humilitatem ancillae suae; ecce enim ex hoc beatam me dicent omnes generationes. Quia fecit mihi magna qui potens est, et sanctum nomen eius.",
+      "seasonRecommendation": null,
+      "orderIndex": 51
+    },
+    {
+      "id": "night_prayer_compline",
+      "title": "Night Prayer (Compline)",
+      "category": "evening",
+      "text": "Lord, grant us a quiet night and a perfect end.\n\nV. Our help is in the name of the Lord.\nR. Who made heaven and earth.\n\nLet us pray: Visit, we beseech Thee, O Lord, this dwelling, and drive far from it all snares of the enemy; let Thy holy Angels dwell within, to preserve us in peace; and let Thy blessing be upon us for ever. Through our Lord Jesus Christ, Thy Son, Who with Thee and the Holy Ghost, liveth and reigneth, one God, world without end. Amen.",
+      "latinText": "Noctem quietam et finem perfectum concedat nobis Dominus omnipotens. Amen.",
+      "seasonRecommendation": null,
+      "orderIndex": 52
+    },
+    {
+      "id": "guardian_angel_evening",
+      "title": "Guardian Angel Prayer (Evening)",
+      "category": "evening",
+      "text": "Angel of God, my guardian dear, to whom God's love commits me here, ever this night be at my side, to light and guard, to rule and guide. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 53
+    },
+    {
+      "id": "examination_of_conscience",
+      "title": "Examination of Conscience",
+      "category": "evening",
+      "text": "Before retiring for the night, examine your conscience:\n\nI give Thee thanks, O Lord, for all the benefits I have received this day.\nI ask pardon for all my sins of thought, word, deed, and omission.\n\nReflect quietly:\n• Have I kept the commandments of God and of the Church?\n• Have I prayed my morning and evening prayers?\n• Have I been honest in my words and dealings?\n• Have I been charitable to those around me?\n• Have I guarded my eyes, ears, and heart?\n• Have I been grateful for the gifts God has given me?\n\nO my God, I am heartily sorry for all my sins. Grant me the grace to amend my life and to persevere until death. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 54
+    },
+    {
+      "id": "nunc_dimittis",
+      "title": "Nunc Dimittis (Canticle of Simeon)",
+      "category": "evening",
+      "text": "Now Thou dost dismiss Thy servant, O Lord, according to Thy word in peace; Because my eyes have seen Thy salvation, which Thou hast prepared before the face of all peoples: A light to the revelation of the Gentiles, and the glory of Thy people Israel. (Luke 2:29-32)",
+      "latinText": "Nunc dimittis servum tuum, Domine, secundum verbum tuum in pace; quia viderunt oculi mei salutare tuum, quod parasti ante faciem omnium populorum, lumen ad revelationem gentium, et gloriam plebis tuae Israel.",
+      "seasonRecommendation": "CHRISTMAS",
+      "orderIndex": 55
+    },
+    {
+      "id": "st_michael_prayer",
+      "title": "Prayer to Saint Michael the Archangel",
+      "category": "saints",
+      "text": "Saint Michael the Archangel, defend us in battle. Be our protection against the wickedness and snares of the devil. May God rebuke him, we humbly pray; and do thou, O Prince of the heavenly hosts, by the power of God, cast into hell Satan and all the evil spirits who prowl through the world seeking the ruin of souls. Amen.",
+      "latinText": "Sancte Michael Archangele, defende nos in proelio, contra nequitiam et insidias diaboli esto praesidium. Imperet illi Deus, supplices deprecamur: tuque, Princeps militiae caelestis, Satanam aliosque spiritus malignos, qui ad perditionem animarum pervagantur in mundo, divina virtute in infernum detrude. Amen.",
+      "seasonRecommendation": null,
+      "orderIndex": 60
+    },
+    {
+      "id": "prayer_st_joseph",
+      "title": "Prayer to Saint Joseph",
+      "category": "saints",
+      "text": "O Saint Joseph, whose protection is so great, so strong, so prompt before the throne of God, I place in thee all my interests and desires. O Saint Joseph, assist me by thy powerful intercession, and obtain for me from thy divine Son all spiritual blessings, through Jesus Christ our Lord; so that, having engaged here below thy heavenly power, I may offer my thanksgiving and homage to the most loving of Fathers.\n\nO Saint Joseph, I never weary contemplating thee, and Jesus asleep in thine arms; I dare not approach while He reposes near thy heart. Press Him in my name and kiss His fine head for me, and ask Him to return the kiss when I draw my dying breath. Saint Joseph, Patron of departing souls, pray for us. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 61
+    },
+    {
+      "id": "prayer_st_anne",
+      "title": "Prayer to Saint Anne",
+      "category": "saints",
+      "text": "Good Saint Anne, thou art the grandmother of our Lord Jesus Christ, the mother of the Blessed Virgin Mary, and the patroness of Christian mothers and grandmothers. With great confidence we have recourse to thy powerful intercession, to obtain from thy divine grandson Jesus all the graces we need for ourselves and for those dear to us. Obtain for us a great love for Jesus and Mary, that we may live and die in their friendship. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 62
+    },
+    {
+      "id": "prayer_st_peter",
+      "title": "Prayer to Saint Peter",
+      "category": "saints",
+      "text": "O holy Apostle, thou whom Christ called the Rock upon which He would build His Church, and to whom He gave the keys of the Kingdom of Heaven: obtain for us, we beseech thee, a firm and living faith, that we may never be ashamed of the name of Christian. Help us to profess openly our belief in Jesus Christ and His Holy Church, and to be faithful to His teachings until death. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 63
+    },
+    {
+      "id": "prayer_st_paul",
+      "title": "Prayer to Saint Paul",
+      "category": "saints",
+      "text": "O glorious Saint Paul, who from a persecutor of the Christian faith, wast transformed into an ardent Apostle of Christ; who laboured without rest for the diffusion of the Gospel; who suffered shipwrecks, scourgings, chains, and all manner of persecutions; who poured out thy blood to the last drop for the salvation of souls: obtain for us the grace to receive the faith with the same ardour with which thou didst preach it, and to show by our lives that we truly believe in the religion which Christ taught. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 64
+    },
+    {
+      "id": "prayer_st_mary_magdalene",
+      "title": "Prayer to Saint Mary Magdalene",
+      "category": "saints",
+      "text": "O Saint Mary Magdalene, thou who hadst the blessing to sit at the feet of Jesus, to anoint His most sacred head, and to be the first to behold His Risen Glory: through thy powerful intercession, obtain for us a true sorrow for sin, a heart on fire with love for our Lord, perseverance in His service, and the grace to behold Him face to face in everlasting glory. Amen.",
+      "latinText": null,
+      "seasonRecommendation": "EASTER",
+      "orderIndex": 65
+    },
+    {
+      "id": "prayer_st_teresa_avila",
+      "title": "Let Nothing Disturb Thee (St. Teresa of Ávila)",
+      "category": "saints",
+      "text": "Let nothing disturb thee,\nLet nothing affright thee.\nAll things are passing.\nGod never changes.\nPatience obtains all things.\nWhosoever hath God wants nothing.\nGod alone suffices.",
+      "latinText": "Nada te turbe, nada te espante, todo se pasa, Dios no se muda, la paciencia todo lo alcanza. Quien a Dios tiene, nada le falta. Solo Dios basta.",
+      "seasonRecommendation": null,
+      "orderIndex": 66
+    },
+    {
+      "id": "prayer_st_francis",
+      "title": "Peace Prayer of Saint Francis",
+      "category": "saints",
+      "text": "Lord, make me an instrument of Thy peace;\nwhere there is hatred, let me sow love;\nwhere there is injury, pardon;\nwhere there is doubt, faith;\nwhere there is despair, hope;\nwhere there is darkness, light;\nand where there is sadness, joy.\n\nO Divine Master, grant that I may not so much seek to be consoled as to console;\nto be understood as to understand;\nto be loved as to love.\nFor it is in giving that we receive;\nit is in pardoning that we are pardoned;\nand it is in dying that we are born to eternal life. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 67
+    },
+    {
+      "id": "prayer_st_thomas_aquinas_before_study",
+      "title": "Prayer Before Study (St. Thomas Aquinas)",
+      "category": "saints",
+      "text": "Creator of all things, true source of light and wisdom, origin of all being, graciously let a ray of Thy light penetrate the darkness of my understanding. Take from me the double darkness in which I have been born, an obscurity of sin and ignorance. Give me a keen understanding, a retentive memory, and the ability to grasp things correctly and fundamentally. Grant me the talent of being exact in my explanations and the ability to express myself with thoroughness and charm. Point out the beginning, direct the progress, and help in the completion. I ask this through Jesus Christ our Lord. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 68
+    },
+    {
+      "id": "prayer_st_thomas_aquinas_thanksgiving",
+      "title": "Thanksgiving After Mass (St. Thomas Aquinas)",
+      "category": "saints",
+      "text": "I give Thee thanks, Lord, Holy Father, Everlasting God, in Thy great mercy, and not for any merits of my own, for having been pleased to feed me, a sinner and Thy unworthy servant, with the precious Body and Blood of Thy Son, Our Lord Jesus Christ. I pray that this Holy Communion may not be for my condemnation, but for my forgiveness and salvation. May it be my armour of faith and shield of good will, the expulsion of my vices and the extinction of all concupiscence, the increase of charity and patience, humility and obedience and all virtues, a firm defence against the plots of all enemies visible and invisible, the perfect calming of all impulses of flesh and spirit, firm adherence to Thee, the one true God, and the happy ending of my life.\n\nI pray that Thou wilt bring me, a sinner, to that ineffable banquet where Thou, with Thy Son and the Holy Spirit, art to Thy Saints true light, full blessedness, everlasting joy, gladness without end, and perfect happiness. Through Christ our Lord. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 69
+    },
+    {
+      "id": "prayer_st_ignatius_suscipe",
+      "title": "Suscipe (Prayer of St. Ignatius of Loyola)",
+      "category": "saints",
+      "text": "Take, Lord, and receive all my liberty, my memory, my understanding, and my entire will — all that I have and possess. Thou hast given all to me. To Thee, O Lord, I return it. All is Thine; dispose of it wholly according to Thy will. Give me Thy love and Thy grace, for this is sufficient for me. Amen.",
+      "latinText": "Suscipe, Domine, universam meam libertatem. Accipe memoriam, intellectum, atque voluntatem omnem. Quidquid habeo vel possideo mihi largitus es; id Tibi totum restituo, ac Tuae prorsus voluntati trado gubernandum. Amorem Tui solum cum gratia Tua mihi dones, et dives sum satis, nec aliud quidquam ultra posco. Amen.",
+      "seasonRecommendation": null,
+      "orderIndex": 70
+    },
+    {
+      "id": "prayer_st_gertrude",
+      "title": "Prayer for the Holy Souls (St. Gertrude)",
+      "category": "saints",
+      "text": "Eternal Father, I offer Thee the most precious Blood of Thy Divine Son, Jesus, in union with the Masses said throughout the world today, for all the Holy Souls in Purgatory, for sinners everywhere, for sinners in the universal Church, those in my own home and within my family. Amen.",
+      "latinText": null,
+      "seasonRecommendation": null,
+      "orderIndex": 71
+    }
+  ]
+}

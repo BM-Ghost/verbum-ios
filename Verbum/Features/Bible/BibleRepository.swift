@@ -1,34 +1,166 @@
 import Foundation
+import SwiftData
 
-/// Bible data repository with bundled mock data.
+/// Bible data repository backed by SwiftData (seeded from bundled JSON on first launch).
+/// All public methods are synchronous after `ensureSeeded()` completes.
 @MainActor
 final class BibleRepository: ObservableObject {
 
-    func getBooks() -> [BibleBook] {
-        Self.allBooks
+    private let modelContext: ModelContext
+    private let seeder: BibleAssetSeeder
+
+    // In-memory verse cache: "bookId_chapter" → verses
+    private var verseCache: [String: [Verse]] = [:]
+    private var bookCache: [BibleBook]? = nil
+
+    init(modelContext: ModelContext) {
+        self.modelContext = modelContext
+        self.seeder = BibleAssetSeeder(modelContext: modelContext)
     }
 
+    // MARK: - Seeding
+
+    /// Call once from ViewModel before querying.
+    func ensureSeeded() async {
+        await seeder.seed()
+        bookCache = nil
+        verseCache = [:]
+    }
+
+    // MARK: - Books
+
+    func getBooks() -> [BibleBook] {
+        if let cached = bookCache { return cached }
+        let descriptor = FetchDescriptor<BibleBookEntity>(
+            sortBy: [SortDescriptor(\.orderIndex)]
+        )
+        let entities = (try? modelContext.fetch(descriptor)) ?? []
+        // Fall back to static list if DB not yet seeded
+        let books = entities.isEmpty ? Self.allBooks : entities.map { $0.toDomain() }
+        bookCache = books
+        return books
+    }
+
+    // MARK: - Verses
+
     func getVerses(bookId: Int, chapter: Int) -> [Verse] {
-        let bookName = Self.allBooks.first(where: { $0.id == bookId })?.name ?? "Unknown"
-        // Realistic sample verses for John 1
-        if bookId == 50 && chapter == 1 {
-            return Self.john1Verses
+        let key = "\(bookId)_\(chapter)"
+        if let cached = verseCache[key] { return cached }
+
+        let bookName = (bookCache ?? getBooks()).first(where: { $0.id == bookId })?.name ?? "Unknown"
+
+        let descriptor = FetchDescriptor<BibleVerseEntity>(
+            predicate: #Predicate { $0.bookId == bookId && $0.chapter == chapter },
+            sortBy: [SortDescriptor(\.verse)]
+        )
+        let entities = (try? modelContext.fetch(descriptor)) ?? []
+        let verses = entities.map { entity in
+            Verse(bookId: bookId, bookName: bookName, chapter: chapter,
+                  verseNumber: entity.verse, text: entity.text)
         }
-        // Generate placeholder verses for other books
-        return (1...20).map { v in
-            Verse(bookId: bookId, bookName: bookName, chapter: chapter, verseNumber: v,
-                  text: "And the word of the Lord came to pass in those days, teaching all nations the truth of salvation.")
-        }
+
+        if verseCache.count > 24 { verseCache.removeAll() }
+        verseCache[key] = verses
+        return verses
     }
 
     func searchVerses(query: String) -> [Verse] {
         guard query.count >= 3 else { return [] }
         let q = query.lowercased()
-        return Self.john1Verses.filter { $0.text.lowercased().contains(q) }
+        let descriptor = FetchDescriptor<BibleVerseEntity>(
+            predicate: #Predicate { $0.text.localizedStandardContains(q) }
+        )
+        let entities = (try? modelContext.fetch(descriptor)) ?? []
+        let books = getBooks()
+        return entities.map { entity in
+            let bookName = books.first(where: { $0.id == entity.bookId })?.name ?? "Unknown"
+            return Verse(bookId: entity.bookId, bookName: bookName,
+                         chapter: entity.chapter, verseNumber: entity.verse, text: entity.text)
+        }
     }
 
-    // MARK: - Sample Data
+    // MARK: - Reference search
 
+    func searchByReference(bookQuery: String, chapter: Int, verseStart: Int?, verseEnd: Int?) -> [Verse] {
+        let q = bookQuery.lowercased()
+        guard let book = getBooks().first(where: {
+            $0.name.lowercased() == q || $0.name.lowercased().hasPrefix(q)
+        }) else { return [] }
+
+        let verses = getVerses(bookId: book.id, chapter: chapter)
+        if let start = verseStart {
+            let end = verseEnd ?? start
+            return verses.filter { $0.verseNumber >= start && $0.verseNumber <= end }
+        }
+        return verses
+    }
+
+    /// All verses — used by SearchBibleUseCase for ranked full-text search.
+    func allVerses() -> [Verse] {
+        let descriptor = FetchDescriptor<BibleVerseEntity>()
+        let entities = (try? modelContext.fetch(descriptor)) ?? []
+        let books = getBooks()
+        return entities.map { entity in
+            let bookName = books.first(where: { $0.id == entity.bookId })?.name ?? "Unknown"
+            return Verse(bookId: entity.bookId, bookName: bookName,
+                         chapter: entity.chapter, verseNumber: entity.verse, text: entity.text)
+        }
+    }
+
+    // MARK: - Bookmarks
+
+    func toggleBookmark(bookId: Int, chapter: Int, verse: Int) {
+        let descriptor = FetchDescriptor<BookmarkEntity>(
+            predicate: #Predicate {
+                $0.bookId == bookId && $0.chapter == chapter && $0.verse == verse
+            }
+        )
+        if let existing = try? modelContext.fetch(descriptor), !existing.isEmpty {
+            existing.forEach { modelContext.delete($0) }
+        } else {
+            modelContext.insert(BookmarkEntity(bookId: bookId, chapter: chapter, verse: verse))
+        }
+        try? modelContext.save()
+    }
+
+    func isBookmarked(bookId: Int, chapter: Int, verse: Int) -> Bool {
+        let descriptor = FetchDescriptor<BookmarkEntity>(
+            predicate: #Predicate {
+                $0.bookId == bookId && $0.chapter == chapter && $0.verse == verse
+            }
+        )
+        return !((try? modelContext.fetch(descriptor)) ?? []).isEmpty
+    }
+
+    // MARK: - Reading position persistence
+
+    private struct ReadingPosition: Codable {
+        let bookId: Int
+        let chapter: Int
+        let verse: Int
+    }
+
+    private let positionKey = "verbum_last_reading_position"
+
+    func recordReadingPosition(bookId: Int, chapter: Int, verse: Int = 1) {
+        let pos = ReadingPosition(bookId: bookId, chapter: chapter, verse: verse)
+        if let data = try? JSONEncoder().encode(pos) {
+            UserDefaults.standard.set(data, forKey: positionKey)
+        }
+        let history = ReadingHistoryEntity(bookId: bookId, chapter: chapter, lastVerse: verse)
+        modelContext.insert(history)
+        try? modelContext.save()
+    }
+
+    var lastReadPosition: (bookId: Int, chapter: Int, verse: Int)? {
+        guard let data = UserDefaults.standard.data(forKey: positionKey),
+              let pos = try? JSONDecoder().decode(ReadingPosition.self, from: data) else { return nil }
+        return (pos.bookId, pos.chapter, pos.verse)
+    }
+
+    // MARK: - Static book list (fallback / for SearchBibleUseCase)
+
+    // This is referenced by SearchBibleUseCase; keep it available.
     static let john1Verses: [Verse] = [
         Verse(bookId: 50, bookName: "John", chapter: 1, verseNumber: 1, text: "In the beginning was the Word, and the Word was with God, and the Word was God."),
         Verse(bookId: 50, bookName: "John", chapter: 1, verseNumber: 2, text: "He was in the beginning with God."),
@@ -81,4 +213,18 @@ final class BibleRepository: ObservableObject {
         }
         return books
     }()
+}
+
+// MARK: - Entity → Domain mapping
+
+private extension BibleBookEntity {
+    func toDomain() -> BibleBook {
+        BibleBook(
+            id: id,
+            name: name,
+            abbreviation: abbreviation,
+            testament: testament == "OT" ? .old : .new,
+            totalChapters: totalChapters
+        )
+    }
 }

@@ -15,13 +15,12 @@ struct AuthScreen: View {
                 // Logo
                 VStack(spacing: VerbumSpacing.md) {
                     Image(systemName: "book.closed.fill")
-                        .font(.system(size: 56))
+                        .font(VerbumTypography.displaySmall)
                         .foregroundStyle(colors.primary)
                     Text("Verbum")
-                        .font(.system(.largeTitle, design: .serif))
-                        .fontWeight(.bold)
+                        .font(VerbumTypography.displaySmall)
                     Text("The Word of God")
-                        .font(.subheadline)
+                        .font(VerbumTypography.bodyMedium)
                         .foregroundStyle(colors.onSurfaceVariant)
                 }
 
@@ -30,11 +29,10 @@ struct AuthScreen: View {
                 // Form
                 VStack(spacing: VerbumSpacing.md) {
                     Text(viewModel.isSignIn ? "Sign In" : "Create Account")
-                        .font(.title3)
-                        .fontWeight(.semibold)
+                        .font(VerbumTypography.titleLarge)
                         .foregroundStyle(colors.onSurface)
                     Text(viewModel.isSignIn ? "Welcome back. Continue your faith journey." : "Join Verbum and begin your daily walk in Scripture.")
-                        .font(.caption)
+                        .font(VerbumTypography.bodySmall)
                         .foregroundStyle(colors.onSurfaceVariant)
                         .multilineTextAlignment(.center)
                         .padding(.bottom, VerbumSpacing.sm)
@@ -57,7 +55,7 @@ struct AuthScreen: View {
 
                     if let error = viewModel.errorMessage {
                         Text(error)
-                            .font(.caption)
+                            .font(VerbumTypography.bodySmall)
                             .foregroundStyle(.red)
                     }
 
@@ -73,7 +71,7 @@ struct AuthScreen: View {
                         viewModel.toggleMode()
                     } label: {
                         Text(viewModel.isSignIn ? "Don't have an account? Sign Up" : "Already have an account? Sign In")
-                            .font(.subheadline)
+                            .font(VerbumTypography.bodyMedium)
                             .foregroundStyle(colors.primary)
                     }
                 }

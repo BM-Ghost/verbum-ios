@@ -9,8 +9,7 @@ struct PrayerDetailScreen: View {
             VStack(alignment: .leading, spacing: VerbumSpacing.lg) {
                 // Category badge
                 Text("\(prayer.category.emoji) \(prayer.category.displayName)")
-                    .font(.caption)
-                    .fontWeight(.semibold)
+                    .font(VerbumTypography.labelMedium)
                     .foregroundStyle(colors.primary)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
@@ -21,13 +20,12 @@ struct PrayerDetailScreen: View {
 
                 // Title
                 Text(prayer.title)
-                    .font(.system(.title2, design: .serif))
-                    .fontWeight(.bold)
+                    .font(ScriptureTypography.bookTitle)
                     .foregroundStyle(colors.onSurface)
 
                 // Prayer text
                 Text(prayer.text)
-                    .font(.system(.body, design: .serif))
+                    .font(ScriptureTypography.verseText)
                     .lineSpacing(8)
                     .foregroundStyle(colors.onSurface)
 
@@ -35,12 +33,11 @@ struct PrayerDetailScreen: View {
                 if let latin = prayer.latinText {
                     Divider()
                     Text("Latin")
-                        .font(.caption)
-                        .fontWeight(.bold)
+                        .font(VerbumTypography.labelLarge)
                         .foregroundStyle(colors.primary)
                         .tracking(2)
                     Text(latin)
-                        .font(.system(.body, design: .serif))
+                        .font(ScriptureTypography.verseText)
                         .italic()
                         .lineSpacing(8)
                         .foregroundStyle(colors.onSurfaceVariant)

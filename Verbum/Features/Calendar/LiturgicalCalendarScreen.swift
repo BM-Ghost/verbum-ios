@@ -17,7 +17,7 @@ struct LiturgicalCalendarScreen: View {
                     }
                     Spacer()
                     Text(viewModel.monthTitle)
-                        .font(.headline)
+                        .font(VerbumTypography.headlineSmall)
                     Spacer()
                     Button { viewModel.nextMonth() } label: {
                         Image(systemName: "chevron.right")
@@ -29,7 +29,7 @@ struct LiturgicalCalendarScreen: View {
                 HStack(spacing: 0) {
                     ForEach(weekdaySymbols, id: \.self) { symbol in
                         Text(symbol.uppercased())
-                            .font(.caption2)
+                            .font(VerbumTypography.labelSmall)
                             .foregroundStyle(colors.onSurfaceVariant)
                             .frame(maxWidth: .infinity)
                     }
@@ -48,7 +48,7 @@ struct LiturgicalCalendarScreen: View {
                         } label: {
                             VStack(spacing: 4) {
                                 Text("\(Calendar.current.component(.day, from: dayDate))")
-                                    .font(.subheadline)
+                                    .font(VerbumTypography.bodyMedium)
                                     .fontWeight(isSelected ? .bold : .regular)
                                     .foregroundStyle(
                                         isSelected ? colors.onPrimary :
@@ -79,32 +79,30 @@ struct LiturgicalCalendarScreen: View {
                             .fill(liturgicalSwiftColor(viewModel.selectedDay.liturgicalColor))
                             .frame(width: 12, height: 12)
                         Text(viewModel.selectedDay.season.displayName)
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
+                            .font(VerbumTypography.bodyMedium)
                             .foregroundStyle(colors.primary)
                     }
 
                     Text(viewModel.selectedDay.celebration)
-                        .font(.system(.title3, design: .serif))
-                        .fontWeight(.semibold)
+                        .font(ScriptureTypography.bookTitle)
                         .foregroundStyle(colors.onSurface)
 
                     HStack {
                         Image(systemName: "star.fill")
-                            .font(.caption)
+                            .font(VerbumTypography.labelSmall)
                             .foregroundStyle(colors.primary)
                         Text(viewModel.selectedDay.rank.rawValue)
-                            .font(.caption)
+                            .font(VerbumTypography.bodySmall)
                             .foregroundStyle(colors.onSurfaceVariant)
                     }
 
                     if let saint = viewModel.selectedDay.saintOfDay {
                         HStack {
                             Image(systemName: "person.fill")
-                                .font(.caption)
+                                .font(VerbumTypography.labelSmall)
                                 .foregroundStyle(colors.primary)
                             Text(saint)
-                                .font(.subheadline)
+                                .font(VerbumTypography.bodyMedium)
                                 .foregroundStyle(colors.onSurface)
                         }
                     }
