@@ -12,6 +12,22 @@ private struct PreviewThemeWrapper<Content: View>: View {
     }
 }
 
+private let previewBibleBook = BibleBook(
+    id: 43,
+    name: "John",
+    abbreviation: "Jn",
+    testament: .new,
+    totalChapters: 21
+)
+
+private let previewPrayer = Prayer(
+    id: "our-father",
+    title: "Our Father",
+    category: .devotion,
+    text: "Our Father, who art in heaven, hallowed be Thy name...",
+    latinText: "Pater noster, qui es in caelis, sanctificetur nomen tuum..."
+)
+
 #Preview("Home") {
     PreviewThemeWrapper {
         HomeScreen(
@@ -34,6 +50,14 @@ private struct PreviewThemeWrapper<Content: View>: View {
     }
 }
 
+#Preview("Bible Reader") {
+    NavigationStack {
+        PreviewThemeWrapper {
+            BibleReaderScreen(book: previewBibleBook, onAskAi: { _ in })
+        }
+    }
+}
+
 #Preview("Missal") {
     NavigationStack {
         PreviewThemeWrapper {
@@ -45,6 +69,14 @@ private struct PreviewThemeWrapper<Content: View>: View {
 #Preview("Community") {
     PreviewThemeWrapper {
         CommunityFeedScreen(viewModel: CommunityViewModel(), onCreatePost: {})
+    }
+}
+
+#Preview("Create Post") {
+    NavigationStack {
+        PreviewThemeWrapper {
+            CreatePostScreen(onSubmit: { _, _, _, _ in })
+        }
     }
 }
 
@@ -60,6 +92,30 @@ private struct PreviewThemeWrapper<Content: View>: View {
     NavigationStack {
         PreviewThemeWrapper {
             ProfileScreen(onBack: {}, onSettings: {}, onSignOut: {})
+        }
+    }
+}
+
+#Preview("Prayer") {
+    NavigationStack {
+        PreviewThemeWrapper {
+            PrayerScreen(onSelectPrayer: { _ in })
+        }
+    }
+}
+
+#Preview("Prayer Detail") {
+    NavigationStack {
+        PreviewThemeWrapper {
+            PrayerDetailScreen(prayer: previewPrayer)
+        }
+    }
+}
+
+#Preview("Auth") {
+    NavigationStack {
+        PreviewThemeWrapper {
+            AuthScreen(onAuthenticated: {})
         }
     }
 }
