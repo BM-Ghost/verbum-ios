@@ -15,7 +15,6 @@ permissions:
 env:
   XCODE_SCHEME: "Verbum"
   XCODE_PROJECT: "Verbum.xcodeproj"
-  DESTINATION: "platform=iOS Simulator,OS=latest,name=iPhone 15"
 
 jobs:
   validate-build-archive:
@@ -29,6 +28,16 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Resolve test simulator destination
+        run: |
+          SIMULATOR_ID=$(xcrun simctl list devices available iOS | grep -E 'iPhone|iPad' | grep -Eo '[0-9A-F-]{36}' | head -n 1)
+          if [[ -z "$SIMULATOR_ID" ]]; then
+            echo "No available iOS simulator found on runner."
+            exit 1
+          fi
+          echo "Using simulator id: $SIMULATOR_ID"
+          echo "TEST_DESTINATION=platform=iOS Simulator,id=$SIMULATOR_ID" >> "$GITHUB_ENV"
+
       - name: Engineering Guidelines
         run: bash Scripts/Verification/verify_verbum_guidelines.sh
 
@@ -38,7 +47,7 @@ jobs:
             -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
             -configuration Debug \
-            -destination "$DESTINATION" \
+            -destination "$TEST_DESTINATION" \
             -derivedDataPath build \
             test \
             CODE_SIGNING_ALLOWED=NO
@@ -49,7 +58,7 @@ jobs:
             -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
             -configuration Debug \
-            -destination "$DESTINATION" \
+            -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath build \
             clean build \
             CODE_SIGNING_ALLOWED=NO
