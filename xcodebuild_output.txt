@@ -1,0 +1,87 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project Verbum.xcodeproj -scheme Verbum -configuration Debug -destination "platform=iOS Simulator,id=6CCA6B29-F0AD-4202-864C-BE68E97DFBF6" -derivedDataPath build test CODE_SIGNING_ALLOWED=NO
+
+Build settings from command line:
+    CODE_SIGNING_ALLOWED = NO
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (2 targets)
+    Target 'VerbumTests' in project 'Verbum'
+        ➜ Explicit dependency on target 'Verbum' in project 'Verbum'
+    Target 'Verbum' in project 'Verbum' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.4.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/mbwire/Projects/Learning/verbum-ios/Verbum/Assets.xcassets
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: 7c8cafa0f7083c17088ea3aa4f3ec066
+Build description path: /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Intermediates.noindex/XCBuildData/7c8cafa0f7083c17088ea3aa4f3ec066.xcbuilddata
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.4.sdk /Users/mbwire/Projects/Learning/verbum-ios/build/SDKStatCaches.noindex/iphonesimulator26.4-23E237-686eebb5dc1d8ecb277353a59184f4aa.sdkstatcache
+    cd /Users/mbwire/Projects/Learning/verbum-ios/Verbum.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.4.sdk -o /Users/mbwire/Projects/Learning/verbum-ios/build/SDKStatCaches.noindex/iphonesimulator26.4-23E237-686eebb5dc1d8ecb277353a59184f4aa.sdkstatcache
+
+ProcessInfoPlistFile /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Products/Debug-iphonesimulator/Verbum.app/Info.plist /Users/mbwire/Projects/Learning/verbum-ios/Verbum/Info.plist (in target 'Verbum' from project 'Verbum')
+    cd /Users/mbwire/Projects/Learning/verbum-ios
+    builtin-infoPlistUtility /Users/mbwire/Projects/Learning/verbum-ios/Verbum/Info.plist -producttype com.apple.product-type.application -genpkginfo /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Products/Debug-iphonesimulator/Verbum.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Intermediates.noindex/Verbum.build/Debug-iphonesimulator/Verbum.build/assetcatalog_generated_info.plist -o /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Products/Debug-iphonesimulator/Verbum.app/Info.plist
+
+ProcessInfoPlistFile /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Products/Debug-iphonesimulator/Verbum.app/PlugIns/VerbumTests.xctest/Info.plist /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Intermediates.noindex/Verbum.build/Debug-iphonesimulator/VerbumTests.build/empty-VerbumTests.plist (in target 'VerbumTests' from project 'Verbum')
+    cd /Users/mbwire/Projects/Learning/verbum-ios
+    builtin-infoPlistUtility /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Intermediates.noindex/Verbum.build/Debug-iphonesimulator/VerbumTests.build/empty-VerbumTests.plist -producttype com.apple.product-type.bundle.unit-test -expandbuildsettings -format binary -platform iphonesimulator -o /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Products/Debug-iphonesimulator/Verbum.app/PlugIns/VerbumTests.xctest/Info.plist
+
+CopySwiftLibs /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Products/Debug-iphonesimulator/Verbum.app/PlugIns/VerbumTests.xctest (in target 'VerbumTests' from project 'Verbum')
+    cd /Users/mbwire/Projects/Learning/verbum-ios
+    builtin-swiftStdLibTool --copy --verbose --scan-executable /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Products/Debug-iphonesimulator/Verbum.app/PlugIns/VerbumTests.xctest/VerbumTests --scan-folder /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Products/Debug-iphonesimulator/Verbum.app/PlugIns/VerbumTests.xctest/Frameworks --scan-folder /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Products/Debug-iphonesimulator/Verbum.app/PlugIns/VerbumTests.xctest/PlugIns --scan-folder /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Products/Debug-iphonesimulator/Verbum.app/PlugIns/VerbumTests.xctest/SystemExtensions --scan-folder /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Products/Debug-iphonesimulator/Verbum.app/PlugIns/VerbumTests.xctest/Extensions --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Products/Debug-iphonesimulator/Verbum.app/PlugIns/VerbumTests.xctest/Frameworks --strip-bitcode --scan-executable /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libXCTestSwiftSupport.dylib --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Intermediates.noindex/Verbum.build/Debug-iphonesimulator/VerbumTests.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+Ignoring --strip-bitcode because --sign was not passed
+
+Validate /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Products/Debug-iphonesimulator/Verbum.app (in target 'Verbum' from project 'Verbum')
+    cd /Users/mbwire/Projects/Learning/verbum-ios
+    builtin-validationUtility /Users/mbwire/Projects/Learning/verbum-ios/build/Build/Products/Debug-iphonesimulator/Verbum.app -shallow-bundle -infoplist-subpath Info.plist
+
+2026-04-23 09:05:57.502774+0300 Verbum[7255:82491] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
+2026-04-23 09:05:57.506926+0300 Verbum[7255:82339] [Verbum] Failed to set app icon: The operation was cancelled.
+2026-04-23 09:05:57.555417+0300 Verbum[7255:82491] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
+Test Suite 'All tests' started at 2026-04-23 09:05:57.761.
+Test Suite 'VerbumTests.xctest' started at 2026-04-23 09:05:57.761.
+Test Suite 'BibleSearchAndReadingTests' started at 2026-04-23 09:05:57.761.
+Test Case '-[VerbumTests.BibleSearchAndReadingTests testInReaderShorthandParsesVerseAndChapterVerse]' started.
+Test Case '-[VerbumTests.BibleSearchAndReadingTests testInReaderShorthandParsesVerseAndChapterVerse]' passed (0.023 seconds).
+Test Case '-[VerbumTests.BibleSearchAndReadingTests testReadingPositionPersistsAndRestores]' started.
+Test Case '-[VerbumTests.BibleSearchAndReadingTests testReadingPositionPersistsAndRestores]' passed (0.013 seconds).
+Test Case '-[VerbumTests.BibleSearchAndReadingTests testReferenceParsingSupportsFuzzyBookResolution]' started.
+Test Case '-[VerbumTests.BibleSearchAndReadingTests testReferenceParsingSupportsFuzzyBookResolution]' passed (0.011 seconds).
+Test Case '-[VerbumTests.BibleSearchAndReadingTests testReferenceSearchReturnsReferenceRankAndRange]' started.
+Test Case '-[VerbumTests.BibleSearchAndReadingTests testReferenceSearchReturnsReferenceRankAndRange]' passed (0.013 seconds).
+Test Suite 'BibleSearchAndReadingTests' passed at 2026-04-23 09:05:57.822.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.060 (0.061) seconds
+Test Suite 'VerbumTests.xctest' passed at 2026-04-23 09:05:57.823.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.060 (0.062) seconds
+Test Suite 'All tests' passed at 2026-04-23 09:05:57.823.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.060 (0.062) seconds
+
+Test session results, code coverage, and logs:
+	/Users/mbwire/Projects/Learning/verbum-ios/build/Logs/Test/Test-Verbum-2026.04.23_09-05-45-+0300.xcresult
+
+** TEST SUCCEEDED **
+
+Testing started
