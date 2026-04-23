@@ -5,6 +5,8 @@ struct BibleReaderScreen: View {
     @StateObject private var viewModel: BibleReaderViewModel
     @Environment(\.colorScheme) private var colorScheme
     @State private var selectedVerse: Verse?
+    @State private var showThemePicker = false
+    @Environment(\.dismiss) private var dismiss
 
     let onAskAi: (String) -> Void
 
@@ -18,32 +20,24 @@ struct BibleReaderScreen: View {
 
         VStack(spacing: 0) {
             // Chapter navigation bar
-            HStack {
-                Button { viewModel.previousChapter() } label: {
-                    Image(systemName: "chevron.left")
-                        .foregroundStyle(viewModel.currentChapter > 1
-                            ? theme.accentColor
-                            : theme.toolbarContent.opacity(0.3))
+            ReadingToolbarView(
+                bookName: viewModel.book.name,
+                chapter: viewModel.currentChapter,
+                totalChapters: viewModel.book.chapterCount,
+                readingMode: viewModel.readingMode,
+                theme: theme,
+                onBack: { dismiss() },
+                onPrevChapter: { viewModel.previousChapter() },
+                onNextChapter: { viewModel.nextChapter() },
+                onOpenChapterNav: { viewModel.onToggleChapterNav() },
+                onToggleSearch: { viewModel.onToggleSearch() },
+                onReadingModeChange: { mode in
+                    viewModel.setReadingMode(mode, isDarkMode: colorScheme == .dark)
+                },
+                onThemeTap: {
+                    showThemePicker = true
                 }
-                .disabled(viewModel.currentChapter <= 1)
-
-                Spacer()
-                Text("Chapter \(viewModel.currentChapter)")
-                    .font(VerbumTypography.titleMedium)
-                    .foregroundStyle(theme.chapterTitleColor)
-                Spacer()
-
-                Button { viewModel.nextChapter() } label: {
-                    Image(systemName: "chevron.right")
-                        .foregroundStyle(viewModel.currentChapter < viewModel.book.chapterCount
-                            ? theme.accentColor
-                            : theme.toolbarContent.opacity(0.3))
-                }
-                .disabled(viewModel.currentChapter >= viewModel.book.chapterCount)
-            }
-            .padding(.horizontal, VerbumSpacing.screenPadding)
-            .padding(.vertical, VerbumSpacing.sm)
-            .background(theme.toolbarBackground)
+            )
 
             Divider()
 
@@ -62,6 +56,7 @@ struct BibleReaderScreen: View {
                             chapter: viewModel.currentChapter,
                             bookName: viewModel.book.name,
                             fontSize: viewModel.fontSize,
+                            typographyStyle: viewModel.typographyStyle,
                             theme: theme,
                             bookmarkedVerses: viewModel.bookmarkedVerses,
                             targetVerse: viewModel.targetVerse,
@@ -75,6 +70,7 @@ struct BibleReaderScreen: View {
                             totalChapters: viewModel.book.chapterCount,
                             bookName: viewModel.book.name,
                             fontSize: viewModel.fontSize,
+                            typographyStyle: viewModel.typographyStyle,
                             theme: theme,
                             bookmarkedVerses: viewModel.bookmarkedVerses,
                             onVerseTap: { verse in selectedVerse = verse },
@@ -96,86 +92,41 @@ struct BibleReaderScreen: View {
             }
         }
         .background(theme.pageBackground)
-        .navigationTitle(viewModel.book.name)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                // Search toggle
-                Button {
-                    viewModel.onToggleSearch()
-                } label: {
-                    Image(systemName: viewModel.showSearch
-                          ? "magnifyingglass.circle.fill"
-                          : "magnifyingglass")
-                        .foregroundStyle(theme.toolbarContent)
-                }
-            }
-
-            ToolbarItem(placement: .topBarTrailing) {
-                // Reading settings menu
-                Menu {
-                    Section("Reading Mode") {
-                        ForEach(ReadingMode.allCases) { mode in
-                            Button {
-                                viewModel.setReadingMode(mode, isDarkMode: colorScheme == .dark)
-                            } label: {
-                                if viewModel.readingMode == mode {
-                                    Label(mode.displayName, systemImage: "checkmark")
-                                } else {
-                                    Text(mode.displayName)
-                                }
-                            }
-                            .disabled(!(theme.allowedModes?.contains(mode) ?? true))
-                        }
+        .toolbar(.hidden, for: .navigationBar)
+        .sheet(isPresented: $showThemePicker) {
+            ThemePickerView(
+                viewModel: ThemePickerViewModel(
+                    selectedTheme: viewModel.themeType,
+                    selectedTypography: viewModel.typographyStyle,
+                    onApply: { theme, typography in
+                        viewModel.setThemeType(theme, isDarkMode: colorScheme == .dark)
+                        viewModel.setTypographyStyle(typography)
+                    },
+                    onPreview: { theme, typography in
+                        viewModel.previewThemeType(theme)
+                        viewModel.setTypographyStyle(typography)
                     }
-
-                    Section("Theme") {
-                        ForEach(ReadingThemeType.allCases) { type in
-                            Button {
-                                viewModel.setThemeType(type, isDarkMode: colorScheme == .dark)
-                            } label: {
-                                if viewModel.themeType == type {
-                                    Label(type.displayName, systemImage: "checkmark")
-                                } else {
-                                    Text(type.displayName)
-                                }
-                            }
-                        }
-                    }
-
-                    Section("Text") {
-                        Button { viewModel.increaseFontSize() } label: {
-                            Label("Increase Font", systemImage: "textformat.size.larger")
-                        }
-                        Button { viewModel.decreaseFontSize() } label: {
-                            Label("Decrease Font", systemImage: "textformat.size.smaller")
-                        }
-                    }
-                } label: {
-                    Image(systemName: "textformat.size")
-                        .foregroundStyle(theme.toolbarContent)
-                }
-            }
+                )
+            )
+            .presentationDetents([.medium, .large])
+            .presentationDragIndicator(.visible)
         }
-        .confirmationDialog("Verse Actions", isPresented: Binding(
-            get: { selectedVerse != nil },
-            set: { if !$0 { selectedVerse = nil } }
-        ), titleVisibility: .visible) {
-            if let verse = selectedVerse {
-                Button("Bookmark") {
-                    viewModel.toggleBookmark(verseId: verse.id)
-                }
-                Button("Share") {
+        .sheet(item: $selectedVerse) { verse in
+            VerseActionsSheet(
+                verse: verse,
+                isBookmarked: viewModel.bookmarkedVerses.contains(verse.id),
+                onBookmark: { viewModel.toggleBookmark(verseId: verse.id) },
+                onShare: {
                     UIPasteboard.general.string =
                         "\(verse.bookName) \(verse.chapter):\(verse.verseNumber)\n\n\(verse.text)"
-                }
-                Button("Ask AI") {
-                    let context =
-                        "Please explain \(verse.bookName) \(verse.chapter):\(verse.verseNumber): \(verse.text)"
-                    onAskAi(context)
-                }
-            }
-            Button("Cancel", role: .cancel) {}
+                },
+                onAskAi: {
+                    onAskAi("Please explain \(verse.bookName) \(verse.chapter):\(verse.verseNumber): \(verse.text)")
+                },
+                onDismiss: { selectedVerse = nil }
+            )
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
         }
     }
 
@@ -282,38 +233,75 @@ struct BibleReaderScreen: View {
     }
 }
 
-// MARK: - Search result row (used inside reader overlay)
+// MARK: - Verse Actions Sheet
 
-private struct ReaderSearchResultRow: View {
-    let result: SearchResult
-    let theme: ReadingTheme
+private struct VerseActionsSheet: View {
+    let verse: Verse
+    let isBookmarked: Bool
+    let onBookmark: () -> Void
+    let onShare: () -> Void
+    let onAskAi: () -> Void
+    let onDismiss: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            HStack(spacing: 6) {
-                Text("\(result.verse.bookName) \(result.verse.chapter):\(result.verse.verseNumber)")
-                    .font(VerbumTypography.labelLarge)
-                    .foregroundStyle(theme.accentColor)
+        VStack(alignment: .leading, spacing: 0) {
+            // Reference
+            Text("\(verse.bookName) \(verse.chapter):\(verse.verseNumber)")
+                .font(VerbumTypography.titleMedium)
+                .foregroundStyle(Color.accentColor)
 
-                if result.rank == .reference {
-                    Text("REF")
-                        .font(.system(size: 9, weight: .bold))
-                        .foregroundStyle(theme.accentColor)
-                        .padding(.horizontal, 4)
-                        .padding(.vertical, 2)
-                        .background(
-                            RoundedRectangle(cornerRadius: 3)
-                                .fill(theme.accentColor.opacity(0.14))
-                        )
-                }
+            Spacer().frame(height: VerbumSpacing.sm)
+
+            // Verse text
+            Text(verse.text)
+                .font(VerbumTypography.bodyMedium)
+                .foregroundStyle(Color.primary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Spacer().frame(height: VerbumSpacing.lg)
+
+            Divider()
+
+            // Bookmark
+            Button(action: {
+                onBookmark()
+                onDismiss()
+            }) {
+                Label(
+                    "Bookmark",
+                    systemImage: isBookmarked ? "bookmark.fill" : "bookmark"
+                )
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, VerbumSpacing.sm)
             }
-            Text(result.verse.text)
-                .font(VerbumTypography.bodySmall)
-                .foregroundStyle(theme.textColor.opacity(0.8))
-                .lineLimit(2)
+
+            Divider()
+
+            // Share
+            Button(action: {
+                onShare()
+                onDismiss()
+            }) {
+                Label("Share", systemImage: "square.and.arrow.up")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, VerbumSpacing.sm)
+            }
+
+            Divider()
+
+            // Ask AI
+            Button(action: {
+                onAskAi()
+                onDismiss()
+            }) {
+                Label("Ask Verbum AI", systemImage: "sparkles")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, VerbumSpacing.sm)
+            }
+
+            Spacer().frame(height: VerbumSpacing.lg)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, VerbumSpacing.screenPadding)
-        .padding(.vertical, 10)
+        .padding(.top, VerbumSpacing.lg)
     }
 }
