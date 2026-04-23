@@ -1,0 +1,130 @@
+name: "Deploy - Production"
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      release_channel:
+        description: "Release channel label"
+        required: true
+        default: "production"
+
+concurrency:
+  group: "deploy-production"
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  checks: write
+
+env:
+  XCODE_SCHEME: "Verbum"
+  XCODE_PROJECT: "Verbum.xcodeproj"
+
+jobs:
+  final-validation:
+    name: "Final Production Validation"
+    runs-on: macos-15
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve test simulator destination
+        run: |
+          SIMULATOR_ID=$(xcrun simctl list devices available iOS | grep -E 'iPhone|iPad' | grep -Eo '[0-9A-F-]{36}' | head -n 1)
+          if [[ -z "$SIMULATOR_ID" ]]; then
+            echo "No available iOS simulator found on runner."
+            exit 1
+          fi
+          echo "Using simulator id: $SIMULATOR_ID"
+          echo "TEST_DESTINATION=platform=iOS Simulator,id=$SIMULATOR_ID" >> "$GITHUB_ENV"
+
+      - name: Engineering Guidelines
+        run: bash Scripts/Verification/verify_verbum_guidelines.sh
+
+      - name: Unit Tests
+        run: |
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Debug \
+            -destination "$TEST_DESTINATION" \
+            -derivedDataPath build \
+            test \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Release Build Check
+        run: |
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Release \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build \
+            clean build \
+            CODE_SIGNING_ALLOWED=NO
+
+  build-and-release:
+    name: "Build Release Artifact and Publish GitHub Release"
+    needs: final-validation
+    runs-on: macos-15
+    timeout-minutes: 45
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from project.yml
+        id: version
+        run: |
+          VERSION_NAME=$(grep -m1 'MARKETING_VERSION:' project.yml | awk -F '"' '{print $2}')
+          if [[ -z "$VERSION_NAME" ]]; then
+            VERSION_NAME="0.0.0"
+          fi
+          echo "version_name=$VERSION_NAME" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Build release app artifact
+        run: |
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Release \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build \
+            clean build \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Package app bundle
+        run: |
+          APP_PATH="build/Build/Products/Release-iphonesimulator/Verbum.app"
+          [[ -d "$APP_PATH" ]] || { echo "Release app not found"; exit 1; }
+          ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" "verbum-ios-release-${{ github.run_number }}.zip"
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: "verbum-ios-production-${{ steps.version.outputs.version_name }}-${{ github.run_number }}"
+          path: "verbum-ios-release-${{ github.run_number }}.zip"
+          retention-days: 90
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "${{ steps.version.outputs.tag }}"
+          name: "verbum-ios ${{ steps.version.outputs.tag }} (build ${{ github.run_number }})"
+          body: |
+            verbum-ios production promotion.
+
+            Channel: ${{ github.event.inputs.release_channel || 'production' }}
+            Build: ${{ github.run_number }}
+            Commit: ${{ github.sha }}
+          files: "verbum-ios-release-${{ github.run_number }}.zip"
+          draft: false
+          prerelease: false
+          generate_release_notes: true

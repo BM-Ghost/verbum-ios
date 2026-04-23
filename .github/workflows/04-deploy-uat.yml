@@ -1,0 +1,73 @@
+name: "Deploy - UAT"
+
+on:
+  push:
+    branches: [uat]
+  workflow_dispatch:
+    inputs:
+      release_notes:
+        description: "Release notes for UAT"
+        required: false
+        default: "UAT release candidate build."
+
+concurrency:
+  group: "deploy-uat"
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  XCODE_SCHEME: "Verbum"
+  XCODE_PROJECT: "Verbum.xcodeproj"
+
+jobs:
+  validate:
+    name: "Release Validation"
+    runs-on: macos-15
+    timeout-minutes: 40
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Engineering Guidelines
+        run: bash Scripts/Verification/verify_verbum_guidelines.sh
+
+      - name: Release Build Check
+        run: |
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Release \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build \
+            clean build \
+            CODE_SIGNING_ALLOWED=NO
+
+  build-and-archive:
+    name: "Build Release Artifact for UAT"
+    needs: validate
+    runs-on: macos-15
+    timeout-minutes: 40
+    environment: uat
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build release simulator artifact
+        run: |
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Release \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build \
+            clean build \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Upload UAT Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: "verbum-ios-uat-${{ github.run_number }}"
+          path: "build/Build/Products/Release-iphonesimulator/Verbum.app"
+          retention-days: 30

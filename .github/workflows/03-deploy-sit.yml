@@ -1,0 +1,83 @@
+name: "Deploy - SIT"
+
+on:
+  push:
+    branches: [sit]
+  workflow_dispatch:
+    inputs:
+      release_notes:
+        description: "Release notes for SIT"
+        required: false
+        default: "SIT build for internal integration testing."
+
+concurrency:
+  group: "deploy-sit"
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  XCODE_SCHEME: "Verbum"
+  XCODE_PROJECT: "Verbum.xcodeproj"
+
+jobs:
+  validate:
+    name: "Pre-Deploy Validation"
+    runs-on: macos-15
+    timeout-minutes: 35
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve test simulator destination
+        run: |
+          SIMULATOR_ID=$(xcrun simctl list devices available iOS | grep -E 'iPhone|iPad' | grep -Eo '[0-9A-F-]{36}' | head -n 1)
+          if [[ -z "$SIMULATOR_ID" ]]; then
+            echo "No available iOS simulator found on runner."
+            exit 1
+          fi
+          echo "Using simulator id: $SIMULATOR_ID"
+          echo "TEST_DESTINATION=platform=iOS Simulator,id=$SIMULATOR_ID" >> "$GITHUB_ENV"
+
+      - name: Engineering Guidelines
+        run: bash Scripts/Verification/verify_verbum_guidelines.sh
+
+      - name: Unit Tests
+        run: |
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Debug \
+            -destination "$TEST_DESTINATION" \
+            -derivedDataPath build \
+            test \
+            CODE_SIGNING_ALLOWED=NO
+
+  build-and-archive:
+    name: "Build and Archive SIT"
+    needs: validate
+    runs-on: macos-15
+    timeout-minutes: 40
+    environment: sit
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build simulator app artifact
+        run: |
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build \
+            clean build \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Upload SIT Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: "verbum-ios-sit-${{ github.run_number }}"
+          path: "build/Build/Products/Debug-iphonesimulator/Verbum.app"
+          retention-days: 21

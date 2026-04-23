@@ -1,0 +1,88 @@
+name: "Security Scan"
+
+on:
+  schedule:
+    - cron: "0 3 * * 1"
+  push:
+    branches: [main, uat]
+  workflow_dispatch:
+
+concurrency:
+  group: "security-scan-${{ github.ref }}"
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+jobs:
+  codeql:
+    name: "CodeQL - SAST (Swift)"
+    runs-on: macos-15
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: swift
+          queries: security-extended, security-and-quality
+
+      - name: Build for CodeQL Analysis
+        run: |
+          xcodebuild \
+            -project Verbum.xcodeproj \
+            -scheme Verbum \
+            -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build \
+            clean build \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:swift"
+          upload: true
+
+  dependency-review:
+    name: "Dependency Review"
+    if: ${{ github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000' }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          base-ref: ${{ github.event.before }}
+          head-ref: ${{ github.sha }}
+          fail-on-severity: high
+
+  secret-scan:
+    name: "Secret Leak Detection"
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gitleaks Scan
+        uses: gitleaks/gitleaks-action@v2
+        with:
+          args: detect --source . --redact --report-format sarif --report-path gitleaks.sarif
+
+      - name: Upload Gitleaks SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: gitleaks.sarif
