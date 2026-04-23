@@ -6,6 +6,7 @@ struct CodexReadingView: View {
     let totalChapters: Int
     let bookName: String
     let fontSize: CGFloat
+    let typographyStyle: ReadingTypographyStyle
     let theme: ReadingTheme
     let bookmarkedVerses: Set<String>
     let onVerseTap: (Verse) -> Void
@@ -55,8 +56,8 @@ struct CodexReadingView: View {
                                         .frame(width: 24, alignment: .trailing)
 
                                     Text(verse.text)
-                                        .font(scriptureFont)
-                                        .lineSpacing(fontSize >= 22 ? 8 : 6)
+                                        .font(verseFont)
+                                        .lineSpacing(verseLineSpacing)
                                         .foregroundStyle(theme.textColor)
                                 }
                                 .padding(.horizontal, VerbumSpacing.md)
@@ -96,11 +97,12 @@ struct CodexReadingView: View {
         }
     }
 
-    private var scriptureFont: Font {
-        if theme.id == "modern" {
-            return .system(size: fontSize, weight: .regular, design: .default)
-        }
-        return ScriptureTypography.verseText(size: fontSize)
+    private var verseFont: Font {
+        typographyStyle.readingFont(size: fontSize)
+    }
+
+    private var verseLineSpacing: CGFloat {
+        typographyStyle.lineSpacing(base: fontSize >= 22 ? 8 : 6)
     }
 
     private func pageTurnGesture(containerWidth: CGFloat) -> some Gesture {
