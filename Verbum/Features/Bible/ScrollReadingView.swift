@@ -5,6 +5,7 @@ struct ScrollReadingView: View {
     let chapter: Int
     let bookName: String
     let fontSize: CGFloat
+    let typographyStyle: ReadingTypographyStyle
     let theme: ReadingTheme
     let bookmarkedVerses: Set<String>
     let targetVerse: Int?
@@ -20,6 +21,7 @@ struct ScrollReadingView: View {
         chapter: Int,
         bookName: String,
         fontSize: CGFloat,
+        typographyStyle: ReadingTypographyStyle,
         theme: ReadingTheme,
         bookmarkedVerses: Set<String>,
         targetVerse: Int? = nil,
@@ -30,6 +32,7 @@ struct ScrollReadingView: View {
         self.chapter = chapter
         self.bookName = bookName
         self.fontSize = fontSize
+        self.typographyStyle = typographyStyle
         self.theme = theme
         self.bookmarkedVerses = bookmarkedVerses
         self.targetVerse = targetVerse
@@ -77,8 +80,8 @@ struct ScrollReadingView: View {
                                         .frame(width: 24, alignment: .trailing)
 
                                     Text(verse.text)
-                                        .font(scriptureFont)
-                                        .lineSpacing(fontSize >= 22 ? 8 : 6)
+                                        .font(verseFont)
+                                        .lineSpacing(verseLineSpacing)
                                         .foregroundStyle(theme.textColor)
                                 }
                                 .padding(.horizontal, VerbumSpacing.md)
@@ -174,11 +177,12 @@ struct ScrollReadingView: View {
         return .clear
     }
 
-    private var scriptureFont: Font {
-        if theme.id == "modern" {
-            return .system(size: fontSize, weight: .regular, design: .default)
-        }
-        return ScriptureTypography.verseText(size: fontSize)
+    private var verseFont: Font {
+        typographyStyle.readingFont(size: fontSize)
+    }
+
+    private var verseLineSpacing: CGFloat {
+        typographyStyle.lineSpacing(base: fontSize >= 22 ? 8 : 6)
     }
 }
 

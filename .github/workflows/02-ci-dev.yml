@@ -1,0 +1,79 @@
+name: "CI - Dev"
+
+on:
+  push:
+    branches: [dev]
+
+concurrency:
+  group: "ci-dev-${{ github.ref }}"
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  checks: write
+
+env:
+  XCODE_SCHEME: "Verbum"
+  XCODE_PROJECT: "Verbum.xcodeproj"
+
+jobs:
+  validate-build-archive:
+    name: "Validate · Build · Archive"
+    runs-on: macos-15
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve test simulator destination
+        run: |
+          SIMULATOR_ID=$(xcrun simctl list devices available iOS | grep -E 'iPhone|iPad' | grep -Eo '[0-9A-F-]{36}' | head -n 1)
+          if [[ -z "$SIMULATOR_ID" ]]; then
+            echo "No available iOS simulator found on runner."
+            exit 1
+          fi
+          echo "Using simulator id: $SIMULATOR_ID"
+          echo "TEST_DESTINATION=platform=iOS Simulator,id=$SIMULATOR_ID" >> "$GITHUB_ENV"
+
+      - name: Engineering Guidelines
+        run: bash Scripts/Verification/verify_verbum_guidelines.sh
+
+      - name: Unit Tests
+        run: |
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Debug \
+            -destination "$TEST_DESTINATION" \
+            -derivedDataPath build \
+            test \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Assemble Simulator App
+        run: |
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build \
+            clean build \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Upload Simulator App
+        uses: actions/upload-artifact@v4
+        with:
+          name: "verbum-ios-dev-build-${{ github.run_number }}"
+          path: "build/Build/Products/Debug-iphonesimulator/Verbum.app"
+          retention-days: 14
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: "test-results-dev-${{ github.run_number }}"
+          path: "build/Logs/Test"
+          retention-days: 7
