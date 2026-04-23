@@ -9,6 +9,7 @@ final class BibleReaderViewModel: ObservableObject {
     @Published var bookmarkedVerses: Set<String> = []
     @Published var readingMode: ReadingMode = .scroll
     @Published var themeType: ReadingThemeType = .classic
+    @Published var typographyStyle: ReadingTypographyStyle = .scripture
 
     // MARK: - In-reader search state
     @Published var showSearch = false
@@ -34,6 +35,14 @@ final class BibleReaderViewModel: ObservableObject {
         loadChapter()
     }
 
+    
+    @Published var showChapterNav = false
+    func onToggleChapterNav() {
+        withAnimation(.easeInOut(duration: 0.2)) {
+            showChapterNav.toggle()
+        }
+    }
+    
     // MARK: - Chapter loading
 
     func loadChapter() {
@@ -82,6 +91,14 @@ final class BibleReaderViewModel: ObservableObject {
         if let allowedModes, !allowedModes.contains(readingMode) {
             readingMode = allowedModes.first ?? .scroll
         }
+    }
+
+    func previewThemeType(_ theme: ReadingThemeType) {
+        themeType = theme
+    }
+
+    func setTypographyStyle(_ style: ReadingTypographyStyle) {
+        typographyStyle = style
     }
 
     // MARK: - Font size
