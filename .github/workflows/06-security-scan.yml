@@ -38,7 +38,7 @@ jobs:
             -project Verbum.xcodeproj \
             -scheme Verbum \
             -configuration Debug \
-            -destination 'platform=iOS Simulator,OS=latest,name=iPhone 15' \
+            -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath build \
             clean build \
             CODE_SIGNING_ALLOWED=NO
@@ -51,6 +51,7 @@ jobs:
 
   dependency-review:
     name: "Dependency Review"
+    if: ${{ github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000' }}
     runs-on: ubuntu-22.04
     timeout-minutes: 10
 
@@ -60,6 +61,8 @@ jobs:
       - name: Dependency Review
         uses: actions/dependency-review-action@v4
         with:
+          base-ref: ${{ github.event.before }}
+          head-ref: ${{ github.sha }}
           fail-on-severity: high
 
   secret-scan:
