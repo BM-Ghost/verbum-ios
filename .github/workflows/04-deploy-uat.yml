@@ -28,7 +28,7 @@ jobs:
     timeout-minutes: 40
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Engineering Guidelines
         run: bash Scripts/Verification/verify_verbum_guidelines.sh
@@ -52,7 +52,7 @@ jobs:
     environment: uat
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Build release simulator artifact
         run: |

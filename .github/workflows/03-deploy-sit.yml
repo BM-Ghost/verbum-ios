@@ -28,7 +28,7 @@ jobs:
     timeout-minutes: 35
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Resolve test simulator destination
         run: |
@@ -62,7 +62,7 @@ jobs:
     environment: sit
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Build simulator app artifact
         run: |
