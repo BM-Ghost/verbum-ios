@@ -76,7 +76,7 @@ jobs:
             CODE_SIGNING_ALLOWED=NO
 
       - name: Upload SIT Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: "verbum-ios-sit-${{ github.run_number }}"
           path: "build/Build/Products/Debug-iphonesimulator/Verbum.app"

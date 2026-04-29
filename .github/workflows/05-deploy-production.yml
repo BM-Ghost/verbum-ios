@@ -107,7 +107,7 @@ jobs:
           ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" "verbum-ios-release-${{ github.run_number }}.zip"
 
       - name: Upload release artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: "verbum-ios-production-${{ steps.version.outputs.version_name }}-${{ github.run_number }}"
           path: "verbum-ios-release-${{ github.run_number }}.zip"
