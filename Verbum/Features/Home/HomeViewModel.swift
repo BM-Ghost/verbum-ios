@@ -11,7 +11,23 @@ final class HomeViewModel: ObservableObject {
         "First Reading: Acts 8:1b-8",
         "Gospel: John 6:35-40"
     )
-    @Published var continueReading: (book: String, verse: String) = ("John 1", "Continue from verse 14")
+    @Published var continueReading: (book: String, verse: String)?
+    @Published var continueReadingPosition: (bookId: Int, chapter: Int, verse: Int)?
+
+    private let bibleRepository: BibleRepository
+
+    init(bibleRepository: BibleRepository? = nil) {
+        self.bibleRepository = bibleRepository ?? BibleRepository(modelContext: VerbumDatabase.modelContainer.mainContext)
+        Task { await loadContinueReading() }
+    }
+
+    func loadContinueReading() async {
+        await bibleRepository.ensureSeeded()
+        guard let position = bibleRepository.lastReadPosition,
+              let book = bibleRepository.getBooks().first(where: { $0.id == position.bookId }) else { return }
+        continueReading = (book.name, "\(book.name) \(position.chapter):\(position.verse)")
+        continueReadingPosition = (position.bookId, position.chapter, position.verse)
+    }
 
     func seasonEmoji(_ season: LiturgicalSeason) -> String {
         switch season {

@@ -12,6 +12,10 @@ final class BibleRepository: ObservableObject {
     // In-memory verse cache: "bookId_chapter" → verses
     private var verseCache: [String: [Verse]] = [:]
     private var bookCache: [BibleBook]? = nil
+    private var allVerseCache: [Verse]? = nil
+    
+    // Track if refresh is in progress
+    private var isRefreshing = false
 
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
@@ -25,6 +29,7 @@ final class BibleRepository: ObservableObject {
         await seeder.seed()
         bookCache = nil
         verseCache = [:]
+        allVerseCache = nil
     }
 
     // MARK: - Books
@@ -64,6 +69,48 @@ final class BibleRepository: ObservableObject {
         return verses
     }
 
+    func getCrossReferences(bookId: Int, chapter: Int, verse: Int, limit: Int = 20) -> [BibleCrossReference] {
+        let descriptor = FetchDescriptor<BibleCrossReferenceEntity>(
+            predicate: #Predicate { $0.fromBookId == bookId && $0.fromChapter == chapter && $0.fromVerse == verse },
+            sortBy: [SortDescriptor(\.votes, order: .reverse)]
+        )
+        let books = getBooks()
+        return ((try? modelContext.fetch(descriptor)) ?? []).prefix(limit).map { reference in
+            BibleCrossReference(
+                fromBookId: reference.fromBookId,
+                fromChapter: reference.fromChapter,
+                fromVerse: reference.fromVerse,
+                toBookId: reference.toBookId,
+                toBookName: books.first(where: { $0.id == reference.toBookId })?.name ?? "Unknown",
+                toChapter: reference.toChapter,
+                toVerseStart: reference.toVerseStart,
+                toVerseEnd: reference.toVerseEnd,
+                votes: reference.votes
+            )
+        }
+    }
+
+    func refreshDrcFromOnline() async -> Result<Int, Error> {
+        guard !isRefreshing else { return .failure(NSError(domain: "BibleRepository", code: -1, userInfo: [NSLocalizedDescriptionKey: "Refresh already in progress"])) }
+        isRefreshing = true
+        
+        do {
+            // Use background context to avoid blocking main thread
+            let backgroundContext = ModelContext(modelContext.container)
+            let backgroundSeeder = BibleAssetSeeder(modelContext: backgroundContext)
+            let count = try await backgroundSeeder.refreshDrcFromOnline()
+            // Clear cache AFTER refresh completes to force reload from updated database
+            verseCache.removeAll()
+            bookCache = nil
+            allVerseCache = nil
+            isRefreshing = false
+            return .success(count)
+        } catch {
+            isRefreshing = false
+            return .failure(error)
+        }
+    }
+
     func searchVerses(query: String) -> [Verse] {
         guard query.count >= 3 else { return [] }
         let q = query.lowercased()
@@ -97,14 +144,17 @@ final class BibleRepository: ObservableObject {
 
     /// All verses — used by SearchBibleUseCase for ranked full-text search.
     func allVerses() -> [Verse] {
+        if let allVerseCache { return allVerseCache }
         let descriptor = FetchDescriptor<BibleVerseEntity>()
         let entities = (try? modelContext.fetch(descriptor)) ?? []
         let books = getBooks()
-        return entities.map { entity in
+        let verses = entities.map { entity in
             let bookName = books.first(where: { $0.id == entity.bookId })?.name ?? "Unknown"
             return Verse(bookId: entity.bookId, bookName: bookName,
                          chapter: entity.chapter, verseNumber: entity.verse, text: entity.text)
         }
+        allVerseCache = verses
+        return verses
     }
 
     // MARK: - Bookmarks

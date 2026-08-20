@@ -7,6 +7,7 @@ enum VerbumDatabase {
         let schema = Schema([
             BibleBookEntity.self,
             BibleVerseEntity.self,
+            BibleCrossReferenceEntity.self,
             BookmarkEntity.self,
             MissalReadingEntity.self,
             PrayerEntity.self,

@@ -4,21 +4,45 @@ struct BibleScreen: View {
     @StateObject private var viewModel = BibleViewModel()
     @Environment(\.verbumColors) private var colors
 
-    let onSelectBook: (BibleBook) -> Void
+    let onSelectBook: (BibleBook, Int?, Int?, [Verse]?) -> Void
 
     var body: some View {
         VStack(spacing: 0) {
             // Header
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Bible")
-                    .font(VerbumTypography.headlineSmall)
-                Text("Read and search Sacred Scripture")
-                    .font(VerbumTypography.bodySmall)
-                    .foregroundStyle(colors.onSurfaceVariant)
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Bible")
+                        .font(VerbumTypography.headlineSmall)
+                    Text("Read and search Sacred Scripture")
+                        .font(VerbumTypography.bodySmall)
+                        .foregroundStyle(colors.onSurfaceVariant)
+                }
+                Spacer()
+                Button {
+                    viewModel.refreshBibleOnline()
+                } label: {
+                    if viewModel.isRefreshingOnline {
+                        ProgressView()
+                            .controlSize(.small)
+                    } else {
+                        Image(systemName: "icloud.and.arrow.down")
+                    }
+                }
+                .accessibilityLabel("Refresh Bible from the internet")
+                .disabled(viewModel.isRefreshingOnline)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, VerbumSpacing.screenPadding)
             .padding(.top, VerbumSpacing.sm)
+
+            if let onlineMessage = viewModel.onlineMessage {
+                Text(onlineMessage)
+                    .font(VerbumTypography.labelSmall)
+                    .foregroundStyle(colors.onSurfaceVariant)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, VerbumSpacing.screenPadding)
+                    .padding(.top, VerbumSpacing.xs)
+            }
 
             // Search bar — calls onSearchQueryChanged for debounce + smart search
             HStack(spacing: 10) {
@@ -116,7 +140,7 @@ struct BibleScreen: View {
                         BibleSearchResultItem(
                             result: result,
                             colors: colors,
-                            onTap: { onSelectBook(bookFor(result.verse)) }
+                            onTap: { onSelectBook(bookFor(result.verse), result.verse.chapter, result.verse.verseNumber, viewModel.searchResults.map { $0.verse }) }
                         )
                         Divider().padding(.leading, VerbumSpacing.screenPadding)
                     }
@@ -140,7 +164,7 @@ struct BibleScreen: View {
             ScrollView {
                 LazyVStack(spacing: VerbumSpacing.xs) {
                     ForEach(viewModel.filteredBooks, id: \.id) { book in
-                        Button { onSelectBook(book) } label: {
+                        Button { onSelectBook(book, nil, nil, nil) } label: {
                             HStack {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(book.name)

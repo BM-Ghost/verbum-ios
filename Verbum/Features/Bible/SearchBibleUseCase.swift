@@ -26,6 +26,10 @@ struct ScriptureRef {
     let verseEnd: Int?
 }
 
+struct MultiScriptureRef {
+    let refs: [ScriptureRef]
+}
+
 struct InReaderNav {
     let chapter: Int
     let verse: Int?
@@ -67,6 +71,24 @@ final class SearchBibleUseCase {
         guard trimmed.count >= 2 else { return [] }
 
         // 1. Try scripture reference — highest priority, resolves directly to verses.
+        // First try multi-reference (comma-separated)
+        if let multiRef = parseMultiReference(trimmed) {
+            var allVerses: [Verse] = []
+            for ref in multiRef.refs {
+                let verses = repository.searchByReference(
+                    bookQuery: ref.book,
+                    chapter: ref.chapter,
+                    verseStart: ref.verseStart,
+                    verseEnd: ref.verseEnd
+                )
+                allVerses.append(contentsOf: verses)
+            }
+            if !allVerses.isEmpty {
+                return allVerses.map { SearchResult(verse: $0, rank: .reference) }
+            }
+        }
+
+        // Then try single reference
         if let ref = parseReference(trimmed) {
             let verses = repository.searchByReference(
                 bookQuery: ref.book,
@@ -104,6 +126,25 @@ final class SearchBibleUseCase {
     }
 
     // MARK: - Reference parsing
+
+    func parseMultiReference(_ input: String) -> MultiScriptureRef? {
+        let s = input
+            .trimmingCharacters(in: .whitespaces)
+            .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
+
+        // Split by comma to get individual references
+        let parts = s.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
+        guard parts.count > 1 else { return nil }
+
+        var refs: [ScriptureRef] = []
+        for part in parts {
+            if let ref = parseReference(part) {
+                refs.append(ref)
+            }
+        }
+
+        return refs.isEmpty ? nil : MultiScriptureRef(refs: refs)
+    }
 
     func parseReference(_ input: String) -> ScriptureRef? {
         let s = input

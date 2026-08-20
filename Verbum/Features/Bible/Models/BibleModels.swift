@@ -28,6 +28,19 @@ struct Verse: Identifiable, Hashable {
     var note: String? = nil
 }
 
+struct BibleCrossReference: Identifiable, Hashable {
+    var id: String { "\(fromBookId)_\(fromChapter)_\(fromVerse)_\(toBookId)_\(toChapter)_\(toVerseStart)" }
+    let fromBookId: Int
+    let fromChapter: Int
+    let fromVerse: Int
+    let toBookId: Int
+    let toBookName: String
+    let toChapter: Int
+    let toVerseStart: Int
+    let toVerseEnd: Int
+    let votes: Int
+}
+
 enum VerseActionType: CaseIterable {
     case bookmark, highlight, note, share, askAi
 }

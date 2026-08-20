@@ -24,16 +24,43 @@ final class BibleBookEntity {
 
 @Model
 final class BibleVerseEntity {
+    @Attribute(.unique) var key: String
     var bookId: Int
     var chapter: Int
     var verse: Int
     var text: String
 
     init(bookId: Int, chapter: Int, verse: Int, text: String) {
+        self.key = "\(bookId)_\(chapter)_\(verse)"
         self.bookId = bookId
         self.chapter = chapter
         self.verse = verse
         self.text = text
+    }
+}
+
+@Model
+final class BibleCrossReferenceEntity {
+    @Attribute(.unique) var key: String
+    var fromBookId: Int
+    var fromChapter: Int
+    var fromVerse: Int
+    var toBookId: Int
+    var toChapter: Int
+    var toVerseStart: Int
+    var toVerseEnd: Int
+    var votes: Int
+
+    init(fromBookId: Int, fromChapter: Int, fromVerse: Int, toBookId: Int, toChapter: Int, toVerseStart: Int, toVerseEnd: Int, votes: Int) {
+        self.key = "\(fromBookId)_\(fromChapter)_\(fromVerse)_\(toBookId)_\(toChapter)_\(toVerseStart)"
+        self.fromBookId = fromBookId
+        self.fromChapter = fromChapter
+        self.fromVerse = fromVerse
+        self.toBookId = toBookId
+        self.toChapter = toChapter
+        self.toVerseStart = toVerseStart
+        self.toVerseEnd = toVerseEnd
+        self.votes = votes
     }
 }
 

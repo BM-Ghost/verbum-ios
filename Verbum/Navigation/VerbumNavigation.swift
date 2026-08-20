@@ -43,6 +43,11 @@ struct VerbumNavigation: View {
                 NavigationStack(path: $homePath) {
                     HomeScreen(
                         onNavigateToBible: { selectedTab = .bible },
+                        onContinueReading: { bookId, chapter, verse in
+                            guard let book = BibleRepository.allBooks.first(where: { $0.id == bookId }) else { return }
+                            selectedTab = .bible
+                            biblePath.append(VerbumRoute.bibleReaderAt(book, chapter: chapter, verse: verse))
+                        },
                         onNavigateToMissal: { selectedTab = .missal },
                         onNavigateToAiChat: { showAiChat = true },
                         onNavigateToPrayer: { selectedTab = .prayer },
@@ -60,8 +65,15 @@ struct VerbumNavigation: View {
                 .tag(VerbumTab.home)
 
                 NavigationStack(path: $biblePath) {
-                    BibleScreen(onSelectBook: { book in
-                        biblePath.append(VerbumRoute.bibleReader(book))
+                    BibleScreen(onSelectBook: { book, chapter, verse, verses in
+                        if let verses = verses, !verses.isEmpty {
+                            // Multiple verses from search
+                            biblePath.append(VerbumRoute.bibleReaderWithVerses(book, initialChapter: chapter ?? 1, verses: verses))
+                        } else if let chapter = chapter, let verse = verse {
+                            biblePath.append(VerbumRoute.bibleReaderAt(book, chapter: chapter, verse: verse))
+                        } else {
+                            biblePath.append(VerbumRoute.bibleReader(book))
+                        }
                     })
                     .navigationDestination(for: VerbumRoute.self) { route in
                         routeDestination(route, path: $biblePath)
@@ -149,6 +161,18 @@ struct VerbumNavigation: View {
                 aiInitialPrompt = context
                 showAiChat = true
             }
+        case .bibleReaderAt(let book, let chapter, let verse):
+            BibleReaderScreen(book: book, initialChapter: chapter, initialVerse: verse) { context in
+                aiInitialPrompt = context
+                showAiChat = true
+            }
+        case .bibleReaderWithVerses(let book, let initialChapter, let verses):
+            BibleReaderScreen(book: book, initialChapter: initialChapter, initialVerses: verses) { context in
+                aiInitialPrompt = context
+                showAiChat = true
+            } onBookSwitchNeeded: { newBook, chapter, verse in
+                biblePath.append(VerbumRoute.bibleReaderWithVerses(newBook, initialChapter: chapter, verses: verses))
+            }
         case .prayerDetail(let prayer):
             PrayerDetailScreen(prayer: prayer)
         case .aiChat(let prompt):
@@ -171,6 +195,8 @@ struct VerbumNavigation: View {
 
 enum VerbumRoute: Hashable {
     case bibleReader(BibleBook)
+    case bibleReaderAt(BibleBook, chapter: Int, verse: Int)
+    case bibleReaderWithVerses(BibleBook, initialChapter: Int, verses: [Verse])
     case prayerDetail(Prayer)
     case aiChat(String)
     case profile

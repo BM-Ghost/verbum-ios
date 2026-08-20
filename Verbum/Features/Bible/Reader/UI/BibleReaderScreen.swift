@@ -7,18 +7,26 @@ struct BibleReaderScreen: View {
     @State private var selectedVerse: Verse?
     @State private var showThemePicker = false
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.scenePhase) private var scenePhase
 
     let onAskAi: (String) -> Void
+    let onBookSwitchNeeded: ((BibleBook, Int, Int) -> Void)?
 
-    init(book: BibleBook, onAskAi: @escaping (String) -> Void = { _ in }) {
-        _viewModel = StateObject(wrappedValue: BibleReaderViewModel(book: book))
+    init(book: BibleBook, initialChapter: Int = 1, initialVerse: Int? = nil, initialVerses: [Verse]? = nil, onAskAi: @escaping (String) -> Void = { _ in }, onBookSwitchNeeded: ((BibleBook, Int, Int) -> Void)? = nil) {
+        if let verses = initialVerses, !verses.isEmpty {
+            _viewModel = StateObject(wrappedValue: BibleReaderViewModel(book: book, initialChapter: initialChapter, initialVerses: verses))
+        } else {
+            _viewModel = StateObject(wrappedValue: BibleReaderViewModel(book: book, initialChapter: initialChapter, initialVerse: initialVerse))
+        }
         self.onAskAi = onAskAi
+        self.onBookSwitchNeeded = onBookSwitchNeeded
     }
 
     var body: some View {
         let theme = viewModel.themeType.resolve(isDark: colorScheme == .dark)
 
-        VStack(spacing: 0) {
+        ZStack(alignment: .bottomTrailing) {
+            VStack(spacing: 0) {
             // Chapter navigation bar
             ReadingToolbarView(
                 bookName: viewModel.book.name,
@@ -26,7 +34,10 @@ struct BibleReaderScreen: View {
                 totalChapters: viewModel.book.chapterCount,
                 readingMode: viewModel.readingMode,
                 theme: theme,
-                onBack: { dismiss() },
+                onBack: {
+                    viewModel.clearTargetVerses()
+                    dismiss()
+                },
                 onPrevChapter: { viewModel.previousChapter() },
                 onNextChapter: { viewModel.nextChapter() },
                 onOpenChapterNav: { viewModel.onToggleChapterNav() },
@@ -59,9 +70,16 @@ struct BibleReaderScreen: View {
                             typographyStyle: viewModel.typographyStyle,
                             theme: theme,
                             bookmarkedVerses: viewModel.bookmarkedVerses,
-                            targetVerse: viewModel.targetVerse,
+                            targetVerses: viewModel.targetVerses,
+                            targetVerseRange: viewModel.targetVerseRange,
                             onTargetVerseConsumed: { viewModel.onTargetVerseConsumed() },
-                            onVerseTap: { verse in selectedVerse = verse }
+                            onVerseTap: { verse in
+                                viewModel.loadCrossReferences(for: verse)
+                                selectedVerse = verse
+                            },
+                            onCurrentVerseChange: { verse in
+                                viewModel.updateCurrentVerse(verse)
+                            }
                         )
                     case .codex:
                         CodexReadingView(
@@ -73,7 +91,10 @@ struct BibleReaderScreen: View {
                             typographyStyle: viewModel.typographyStyle,
                             theme: theme,
                             bookmarkedVerses: viewModel.bookmarkedVerses,
-                            onVerseTap: { verse in selectedVerse = verse },
+                            onVerseTap: { verse in
+                                viewModel.loadCrossReferences(for: verse)
+                                selectedVerse = verse
+                            },
                             onChapterChange: { chapter in
                                 guard chapter >= 1, chapter <= viewModel.book.chapterCount else { return }
                                 viewModel.currentChapter = chapter
@@ -90,9 +111,65 @@ struct BibleReaderScreen: View {
                 }
                 .animation(.easeInOut(duration: 0.22), value: viewModel.showSearch)
             }
+            }
+
+            // Floating navigation controls for target verses
+            if !viewModel.targetVerseLocations.isEmpty {
+                VStack(spacing: 8) {
+                    // Previous verse button
+                    Button(action: { viewModel.goToPreviousTargetVerse() }) {
+                        Image(systemName: "chevron.up")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundStyle(theme.accentColor)
+                            .frame(width: 50, height: 50)
+                            .background(
+                                Circle()
+                                    .fill(theme.toolbarBackground)
+                                    .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
+                            )
+                    }
+                    .disabled(!viewModel.hasPreviousTargetVerse())
+                    .opacity(viewModel.hasPreviousTargetVerse() ? 1 : 0.4)
+
+                    // Next verse button
+                    Button(action: { viewModel.goToNextTargetVerse() }) {
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundStyle(theme.accentColor)
+                            .frame(width: 50, height: 50)
+                            .background(
+                                Circle()
+                                    .fill(theme.toolbarBackground)
+                                    .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
+                            )
+                    }
+                    .disabled(!viewModel.hasNextTargetVerse())
+                    .opacity(viewModel.hasNextTargetVerse() ? 1 : 0.4)
+                }
+                .padding(.trailing, 20)
+                .padding(.bottom, 100)
+            }
         }
         .background(theme.pageBackground)
         .toolbar(.hidden, for: .navigationBar)
+        .onAppear {
+            viewModel.onBookSwitchNeeded = { newBook, chapter, verse in
+                // Use the callback to handle book switching
+                onBookSwitchNeeded?(newBook, chapter, verse)
+            }
+            // Save position when view appears
+            viewModel.saveCurrentPosition()
+        }
+        .onDisappear {
+            // Save current position when leaving the screen (any method)
+            viewModel.saveCurrentPosition()
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .inactive || newPhase == .background {
+                // Save position when app goes to background
+                viewModel.saveCurrentPosition()
+            }
+        }
         .sheet(isPresented: $showThemePicker) {
             ThemePickerView(
                 viewModel: ThemePickerViewModel(
@@ -114,6 +191,8 @@ struct BibleReaderScreen: View {
         .sheet(item: $selectedVerse) { verse in
             VerseActionsSheet(
                 verse: verse,
+                references: viewModel.selectedVerseReferences,
+                isLoadingReferences: viewModel.isLoadingReferences,
                 isBookmarked: viewModel.bookmarkedVerses.contains(verse.id),
                 onBookmark: { viewModel.toggleBookmark(verseId: verse.id) },
                 onShare: {
@@ -237,6 +316,8 @@ struct BibleReaderScreen: View {
 
 private struct VerseActionsSheet: View {
     let verse: Verse
+    let references: [BibleCrossReference]
+    let isLoadingReferences: Bool
     let isBookmarked: Bool
     let onBookmark: () -> Void
     let onShare: () -> Void
@@ -261,6 +342,26 @@ private struct VerseActionsSheet: View {
             Spacer().frame(height: VerbumSpacing.lg)
 
             Divider()
+
+            Text("Related passages")
+                .font(VerbumTypography.titleSmall)
+                .foregroundStyle(Color.accentColor)
+                .padding(.top, VerbumSpacing.md)
+
+            if isLoadingReferences {
+                ProgressView("Loading local references…")
+                    .padding(.vertical, VerbumSpacing.sm)
+            } else if references.isEmpty {
+                Text("No related passages found.")
+                    .foregroundStyle(.secondary)
+                    .padding(.vertical, VerbumSpacing.sm)
+            } else {
+                ForEach(references) { reference in
+                    Text("\(reference.toBookName) \(reference.toChapter):\(reference.toVerseStart)" + (reference.toVerseEnd > reference.toVerseStart ? "-\(reference.toVerseEnd)" : ""))
+                        .font(VerbumTypography.bodyMedium)
+                        .padding(.vertical, VerbumSpacing.xs)
+                }
+            }
 
             // Bookmark
             Button(action: {

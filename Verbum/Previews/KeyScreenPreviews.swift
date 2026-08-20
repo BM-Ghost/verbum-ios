@@ -32,6 +32,7 @@ private let previewPrayer = Prayer(
     PreviewThemeWrapper {
         HomeScreen(
             onNavigateToBible: {},
+            onContinueReading: { _, _, _ in },
             onNavigateToMissal: {},
             onNavigateToAiChat: {},
             onNavigateToPrayer: {},
@@ -45,7 +46,7 @@ private let previewPrayer = Prayer(
 #Preview("Bible") {
     NavigationStack {
         PreviewThemeWrapper {
-            BibleScreen(onSelectBook: { _ in })
+            BibleScreen(onSelectBook: { _, _, _, _ in })
         }
     }
 }

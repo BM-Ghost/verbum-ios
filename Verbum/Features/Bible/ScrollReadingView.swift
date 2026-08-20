@@ -8,13 +8,17 @@ struct ScrollReadingView: View {
     let typographyStyle: ReadingTypographyStyle
     let theme: ReadingTheme
     let bookmarkedVerses: Set<String>
-    let targetVerse: Int?
+    let targetVerses: Set<Int>
+    let targetVerseRange: (start: Int, end: Int)?
     let onTargetVerseConsumed: () -> Void
     let onVerseTap: (Verse) -> Void
+    let onCurrentVerseChange: (Int) -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var scrollOffset: CGFloat = 0
     @State private var highlightedVerse: Int? = nil
+    @State private var targetVerseVisible = false
+    @State private var currentVisibleVerse: Int = 1
 
     init(
         verses: [Verse],
@@ -24,9 +28,11 @@ struct ScrollReadingView: View {
         typographyStyle: ReadingTypographyStyle,
         theme: ReadingTheme,
         bookmarkedVerses: Set<String>,
-        targetVerse: Int? = nil,
+        targetVerses: Set<Int> = [],
+        targetVerseRange: (start: Int, end: Int)? = nil,
         onTargetVerseConsumed: @escaping () -> Void = {},
-        onVerseTap: @escaping (Verse) -> Void
+        onVerseTap: @escaping (Verse) -> Void,
+        onCurrentVerseChange: @escaping (Int) -> Void = { _ in }
     ) {
         self.verses = verses
         self.chapter = chapter
@@ -35,9 +41,11 @@ struct ScrollReadingView: View {
         self.typographyStyle = typographyStyle
         self.theme = theme
         self.bookmarkedVerses = bookmarkedVerses
-        self.targetVerse = targetVerse
+        self.targetVerses = targetVerses
+        self.targetVerseRange = targetVerseRange
         self.onTargetVerseConsumed = onTargetVerseConsumed
         self.onVerseTap = onVerseTap
+        self.onCurrentVerseChange = onCurrentVerseChange
     }
 
     var body: some View {
@@ -97,6 +105,14 @@ struct ScrollReadingView: View {
                                 .contentShape(Rectangle())
                                 .onTapGesture { onVerseTap(verse) }
                                 .id(verse.verseNumber)
+                                .background(
+                                    GeometryReader { geo in
+                                        Color.clear.preference(
+                                            key: VerseFramePreferenceKey.self,
+                                            value: [verse.verseNumber: geo.frame(in: .named("reader-scroll"))]
+                                        )
+                                    }
+                                )
                             }
                         }
                         .padding(.horizontal, VerbumSpacing.screenPadding)
@@ -117,17 +133,37 @@ struct ScrollReadingView: View {
                     .onPreferenceChange(ScrollOffsetPreferenceKey.self) { offset in
                         scrollOffset = offset
                     }
-                    .onChange(of: targetVerse) { _, newVerse in
-                        guard let v = newVerse else { return }
-                        withAnimation(.easeInOut(duration: reduceMotion ? 0 : 0.4)) {
-                            proxy.scrollTo(v, anchor: .center)
-                        }
-                        highlightedVerse = v
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
-                            withAnimation(.easeOut(duration: reduceMotion ? 0 : 0.4)) {
-                                highlightedVerse = nil
+                    .onPreferenceChange(VerseFramePreferenceKey.self) { frames in
+                        if !targetVerseVisible, let firstTarget = targetVerses.sorted().first {
+                            if frames[firstTarget] != nil {
+                                targetVerseVisible = true
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                    withAnimation(.easeInOut(duration: reduceMotion ? 0 : 0.4)) {
+                                        proxy.scrollTo(firstTarget, anchor: .center)
+                                    }
+                                }
                             }
-                            onTargetVerseConsumed()
+                        }
+
+                        // Track currently visible verse for continue reading
+                        let screenHeight = outer.size.height
+                        let screenMiddle = screenHeight / 2
+
+                        var closestVerse: Int?
+                        var closestDistance: CGFloat = .infinity
+
+                        for (verseNum, frame) in frames {
+                            let verseMiddle = frame.midY
+                            let distance = abs(verseMiddle - screenMiddle)
+                            if distance < closestDistance {
+                                closestDistance = distance
+                                closestVerse = verseNum
+                            }
+                        }
+
+                        if let visibleVerse = closestVerse, visibleVerse != currentVisibleVerse {
+                            currentVisibleVerse = visibleVerse
+                            onCurrentVerseChange(visibleVerse)
                         }
                     }
                 }
@@ -168,7 +204,12 @@ struct ScrollReadingView: View {
     }
 
     private func verseBackground(_ verse: Verse) -> Color {
-        if verse.verseNumber == highlightedVerse {
+        // Check if verse is in target verses set
+        if targetVerses.contains(verse.verseNumber) {
+            return theme.accentColor.opacity(0.32)
+        }
+        // Check if verse is in target range
+        if let range = targetVerseRange, verse.verseNumber >= range.start && verse.verseNumber <= range.end {
             return theme.accentColor.opacity(0.32)
         }
         if bookmarkedVerses.contains(verse.id) {
@@ -384,6 +425,15 @@ private struct ScrollOffsetPreferenceKey: PreferenceKey {
     static var defaultValue: CGFloat = 0
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
         value = nextValue()
+    }
+}
+
+// MARK: - Verse frame preference key
+
+private struct VerseFramePreferenceKey: PreferenceKey {
+    static var defaultValue: [Int: CGRect] = [:]
+    static func reduce(value: inout [Int: CGRect], nextValue: () -> [Int: CGRect]) {
+        value.merge(nextValue()) { _, new in new }
     }
 }
 

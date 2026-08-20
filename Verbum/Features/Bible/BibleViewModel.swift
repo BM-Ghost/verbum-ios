@@ -7,6 +7,8 @@ final class BibleViewModel: ObservableObject {
     @Published var searchResults: [SearchResult] = []
     @Published var isSearching = false
     @Published var selectedTestament: Testament = .old
+    @Published var isRefreshingOnline = false
+    @Published var onlineMessage: String?
 
     private let repository: BibleRepository
     private let searchUseCase: SearchBibleUseCase
@@ -55,6 +57,27 @@ final class BibleViewModel: ObservableObject {
             let results = self.searchUseCase.search(query: query)
             self.searchResults = results
             self.isSearching = false
+        }
+    }
+
+    func refreshBibleOnline() {
+        guard !isRefreshingOnline else { return }
+        isRefreshingOnline = true
+        onlineMessage = nil
+        Task {
+            let result = await repository.refreshDrcFromOnline()
+            isRefreshingOnline = false
+            switch result {
+            case .success(let count):
+                if count == 0 {
+                    onlineMessage = "Bible data is already up to date"
+                } else {
+                    onlineMessage = "Updated \(count) local verses"
+                    state = .success(repository.getBooks())
+                }
+            case .failure:
+                onlineMessage = "Offline cache kept; refresh unavailable"
+            }
         }
     }
 }
